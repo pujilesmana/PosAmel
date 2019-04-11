@@ -16,7 +16,11 @@
 
 	  	function index(){
 	  		if($this->session->userdata('akses') == 1 && $this->session->userdata('masuk') == true){
+		       $y['title'] = "Daftar Barang";
 		       
+		       $this->load->view('v_header',$y);
+		       $this->load->view('owner/v_sidebar');
+		       $this->load->view('owner/v_barang');
 		    }
 		    else{
 		       redirect('Login');

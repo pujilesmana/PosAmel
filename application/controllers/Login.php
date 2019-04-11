@@ -27,7 +27,7 @@ class Login extends CI_Controller{
                 $this->session->set_userdata('hp',$user_hp);
                 $this->session->set_userdata('id',$id);
                 $this->session->set_userdata('nama',$user_nama);
-                echo "mantap";
+                redirect('Owner/Barang');
             }
              else if($xcadmin['user_level']=='2')
              {
