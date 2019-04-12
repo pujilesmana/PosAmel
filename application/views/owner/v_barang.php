@@ -75,7 +75,7 @@
                         <h5 class="modal-title">Tambah Barang Reseller</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Pengawas/Laporan/addDataharian" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Owner/Barang/barang_simpan" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="col-md-12">
@@ -88,39 +88,39 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label class="control-label">Stock Akhir</label>
-                                    <input class="form-control form-white"  type="text" name="stock_akhir" />
+                                    <input class="form-control form-white"  type="number" name="stock_akhir" />
                                 </div>
                                 <div class="col-md-12">
                                     <label class="control-label">Harga Modal</label>
-                                    <input class="form-control form-white"  type="text" name="harga_modal" />
+                                    <input class="form-control form-white money"  type="text" name="harga_modal" />
                                 </div>
                                 <div class="col-md-12">
                                     <label class="control-label">Foto Barang</label>
                                     <input class="form-control form-white" type="file" name="filefoto" />
                                 </div>
-                                <div data-repeater-list="name">
-                                  <div data-repeater-item>
-                                    <div class="form-group col-md-12">
-                                      <label class="control-label mt-10" for="harga">Harga reseller</label>
-                                      <div class="row">
-                                        <div class="col-md-2">
-                                          <label class="control-label" for="harga">Min.qty</label>
-                                          <input class="form-control" type="number" name="minqty[]" >
-                                        </div>
-                                        <div class="col-md-2">
-                                          <label class="control-label" for="harga">Max.qty</label>
-                                          <input class="form-control" type="number" name="maxqty[]">
-                                        </div>
-                                        <div class="col-md-8">
-                                          <label class="control-label" for="harga">Harga</label>
-                                          <input class="form-control" type="text" name="harga[]">
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                                <div class="col-md-12 mt-10">
+                                  <label class="control-label mt-10" for="harga">Harga reseller</label>
                                 </div>
-                              </div>
-
+                                      <div class="form-group col-md-12" id="dynamic_field">
+                                        <div class="row">
+                                          <div class="col-md-2">
+                                            <label class="control-label" for="harga">Min.qty</label>
+                                            <input class="form-control" type="number" name="minqty[]" >
+                                          </div>
+                                          <div class="col-md-2">
+                                            <label class="control-label" for="harga">Max.qty</label>
+                                            <input class="form-control" type="number" name="maxqty[]">
+                                          </div>
+                                          <div class="col-md-5">
+                                            <label class="control-label" for="harga">Harga</label>
+                                            <input class="form-control" type="text" name="harga[]">
+                                          </div>
+                                        </div>
+                                      </div>                                  
+                                    <div class="col-md-12 mt-30">
+                                        <input class="button" value="Add new" id="add"/>
+                                    </div>                                
+                            </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger ripple" data-dismiss="modal">Close</button>
@@ -339,9 +339,48 @@
  
 <!-- custom -->
 <script src="<?php echo base_url()?>assets/admin/js/custom.js"></script>
+  
+<!-- mask -->
+<script src="<?php echo base_url()?>assets/admin/js/jquery.mask.min.js"></script>
  
 </body>
 </html> 
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    // Format mata uang.
+    $( '.money' ).mask('000.000.000.000.000', {reverse: true});
+
+  })
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  var i=1;
+  $('#add').click(function(){
+    i++;
+    $('#dynamic_field').append('<div class="row" id="row'+i+'"><div class="col-md-2"><label class="control-label" for="harga">Min.qty</label><input class="form-control" type="number" name="minqty[]" ></div><div class="col-md-2"><label class="control-label" for="harga">Max.qty</label><input class="form-control" type="number" name="maxqty[]"></div><div class="col-md-5"><label class="control-label" for="harga">Harga</label><input class="form-control money" type="text" name="harga[]"></div><div class="col-md-2 mt-30"><button type="button" id="'+i+'" class="btn btn-danger btn-block btn_remove">Delete</button></div></div>');
+  });
+  
+  $(document).on('click', '.btn_remove', function(){
+    var button_id = $(this).attr("id"); 
+    $('#row'+button_id+'').remove();
+  });
+  
+  $('#submit').click(function(){    
+    $.ajax({
+      url:"<?php echo base_url()?>Owner/Barang",
+      method:"POST",
+      data:$('#add_name').serialize(),
+      success:function(data)
+      {
+        $('#add_name')[0].reset();
+      }
+    });
+  });
+  
+});
+</script>
 
 <?php if($this->session->flashdata('msg')=='update'):?>
         <script type="text/javascript">
@@ -350,7 +389,8 @@
                     text: "Data Harian berhasil Diupdate.",
                     showHideTransition: 'slide',
                     icon: 'success',
-                    hideAfter: false,
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#ffffff',
                     position: 'top-right',
                     bgColor: '#00C9E6'
                 });
@@ -362,7 +402,8 @@
                     text: "Laporan dibuat, Silahkan masukan data laporannya",
                     showHideTransition: 'slide',
                     icon: 'info',
-                    hideAfter: false,
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#ffffff',
                     position: 'top-right',
                     bgColor: '#7EC857'
                 });
@@ -374,7 +415,8 @@
                     text: "Data berhasil didelete",
                     showHideTransition: 'slide',
                     icon: 'info',
-                    hideAfter: false,
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#ffffff',
                     position: 'top-right',
                     bgColor: 'red'
                 });

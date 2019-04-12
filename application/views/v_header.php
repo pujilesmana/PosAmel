@@ -18,7 +18,6 @@
 <!-- css -->
 <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>assets/admin/css/style.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>assets/admin/css/jquery.toast.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>assets/admin/css/image_grid.css">
 
  
 </head>
