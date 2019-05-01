@@ -38,7 +38,7 @@ class Login extends CI_Controller{
                 $this->session->set_userdata('hp',$user_hp);
                 $this->session->set_userdata('id',$id);
                 $this->session->set_userdata('nama',$user_nama);
-                echo "Suksss";
+                redirect('Admin/Pemesanan');
              } //Front Office 
         }
         
