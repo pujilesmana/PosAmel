@@ -19,9 +19,14 @@
         <div class="card card-statistics h-100"> 
           <div class="card-body">
             <div class="col-xl-12 mb-10" style="display: flex">
-              <div class="col-md-6">
+              <div class="col-md-3">
                 <a href="" data-toggle="modal" data-target="#cari" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-search pr-2"></i> Cari Transaksi
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a href="" data-toggle="modal" data-target="#cetak_tanggal" target="blank" class="btn btn-primary btn-block ripple m-t-20">
+                  <i class="fa fa-print pr-2"></i> Cetak
                 </a>
               </div>
               <div class="col-md-3">
@@ -70,9 +75,10 @@
                       $at_nama = $i['at_nama'];
 
                       if($level == 1){
-                        $q=$this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan, (SUM(a.lb_qty * c.barang_harga_modal))-(SUM(a.lb_qty * d.br_harga)) AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id"); //Salah masih query nya
+                        $q=$this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan, ((SUM(a.lb_qty * d.br_harga))-SUM(a.lb_qty * c.barang_harga_modal)) AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id"); 
                         $c=$q->row_array();
                         $omset = $c['total_keseluruhan'];
+                        $untung = $c['total'];
                       }elseif($level == 2){
                         $q=$this->db->query("SELECT SUM(a.lb_qty * d.bnr_harga) AS total_keseluruhan, (SUM(a.lb_qty * d.bnr_harga))-(SUM(a.lb_qty * c.barang_harga_modal)) AS total FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
                         $c=$q->row_array();
@@ -108,10 +114,40 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Pilih Bulan</h5>
+                        <h5 class="modal-title">Pilih tanggal</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <form action="<?php echo base_url()?>Owner/Transaksi/Cari" method="post" enctype="multipart/form-data">
+                    <div class="modal-body p-20">
+                            <div class="row">
+                               <div class="col-md-6">
+                                      <label class="control-label">Dari Tanggal*</label>
+                                      <input class="form-control form-white" type="date" name="daritgl" required/>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label class="control-label">Ke Tanggal*</label>
+                                      <input class="form-control form-white" type="date" name="ketgl" required/>
+                                  </div>
+                            </div>          
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger ripple" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success ripple save-category" id="simpan">Cari</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal" tabindex="-1" role="dialog" id="cetak_tanggal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Pilih tanggal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <form action="<?= base_url()?>Owner/Transaksi/cetak_transaksiTanggal" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                <div class="col-md-6">

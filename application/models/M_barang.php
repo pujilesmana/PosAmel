@@ -10,13 +10,13 @@
         	return $hsl;
 		}
 
-		function update_barangImage($barang_id,$nama_barang, $barang_stock_awal, $barang_stock_akhir, $barang_harga_modal, $barang_foto){
-			$hsl = $this->db->query("UPDATE barang SET barang_nama='$nama_barang', barang_stock_awal='$barang_stock_awal',barang_stock_akhir='$barang_stock_akhir',barang_harga_modal='$barang_harga_modal',barang_foto='$barang_foto' WHERE barang_id='$barang_id'");
+		function update_barangImage($barang_id,$nama_barang, $stock=0, $barang_harga_modal, $barang_foto, $diskon){
+			$hsl = $this->db->query("UPDATE barang SET barang_nama='$nama_barang', barang_stock_awal=barang_stock_awal + '$stock',barang_stock_akhir=barang_stock_akhir + '$stock',barang_harga_modal='$barang_harga_modal',barang_foto='$barang_foto', diskon='$diskon' WHERE barang_id='$barang_id'");
      		return $hsl;
 		}
 
-		function update_barang_noImage($barang_id,$nama_barang, $barang_stock_awal, $barang_stock_akhir, $barang_harga_modal){
-			$hsl = $this->db->query("UPDATE barang SET barang_nama='$nama_barang', barang_stock_awal='$barang_stock_awal',barang_stock_akhir='$barang_stock_akhir',barang_harga_modal='$barang_harga_modal' WHERE barang_id='$barang_id'");
+		function update_barang_noImage($barang_id,$nama_barang, $stock=0, $barang_harga_modal, $diskon){
+			$hsl = $this->db->query("UPDATE barang SET barang_nama='$nama_barang', barang_stock_awal=barang_stock_awal + '$stock',barang_stock_akhir=barang_stock_akhir + '$stock',barang_harga_modal='$barang_harga_modal', diskon='$diskon' WHERE barang_id='$barang_id'");
      		return $hsl;
 		}
 
@@ -101,7 +101,7 @@
 		}
 
 		function getHistoryStock($barang_id){
-			$hasil=$this->db->query("SELECT a.stock_berkurang,a.barang_id,b.barang_nama,DATE_FORMAT(a.hsb_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM history_stock_barang a,barang b WHERE a.barang_id = '$barang_id' AND a.barang_id = b.barang_id");
+			$hasil=$this->db->query("SELECT c.pemesanan_nama,a.stock_berkurang,a.barang_id,b.barang_nama,DATE_FORMAT(a.hsb_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM history_stock_barang a,barang b, pemesanan c WHERE a.barang_id = '$barang_id' AND a.barang_id = b.barang_id AND a.pemesanan_id = c.pemesanan_id");
         	return $hasil;
 		}
 

@@ -29,7 +29,8 @@
                       <th width="20">No</th>
                       <th>Barang Nama</th>
                       <th>Jumlah Barang</th>
-                      <th>Harga</th>
+                      <th>Harga per item</th>
+                      <th>Total Harga</th>
                       <th width="100"><center>Aksi</center></th>
                   </tr>
               </thead>
@@ -51,19 +52,21 @@
                       $qty = $i['lb_qty'];
                       $barang_nama = $i['barang_nama'];
                       $br_harga = $i['br_harga'];
+                      $total = $i['total'];
                   ?>
                     <tr>
                      <td><center><?php echo $no?></center></td>
                       <td><?php echo $barang_nama?></td>
                       <td><?php echo $qty?></td>
                       <td><?php echo rupiah($br_harga)?></td>
+                      <td><?php echo rupiah($total)?></td>
                       <td>
                           <center><a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata"><span class="ti-trash"></span></a></center>
                       </td>
                     </tr>
                     <?php endforeach;?>
                     <tr>
-                      <th colspan="3"><center>Jumlah</center></th>
+                      <th colspan="4"><center>Jumlah</center></th>
                       <th><?php echo rupiah($jumlah)?></th>
                     </tr>
               </tbody>
@@ -81,7 +84,7 @@
                         <h5 class="modal-title">Tambah Kurir</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Admin/Pemesanan/tambahpesananR" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Owner/Barang/tambahpesananR" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="form-group col-md-12 mt-10" id="dynamic_field1">
@@ -140,7 +143,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body p-20">
-                        <form action="<?php echo base_url()?>Admin/Pemesanan/hapuspesananlb" method="post">
+                        <form action="<?php echo base_url()?>Owner/Barang/hapuspesananlb" method="post">
                             <div class="row">
                                 <div class="col-md-12">
                                     <input type="hidden" name="pemesanan_id" value="<?php echo $pemesanan_id?>"/>

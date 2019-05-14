@@ -34,6 +34,7 @@
                       <th>Harga Modal</th>
                       <th>Harga Customer</th> 
                       <th>Tanggal Input</th>
+                      <th>Diskon</th>
                       <th width="100"><center>Aksi</center></th>
                   </tr>
               </thead>
@@ -58,6 +59,7 @@
                     $tanggal = $i['tanggal'];
                     $bnr_id = $i['bnr_id'];
                     $harga_normal = $i['bnr_harga'];
+                    $diskon = $i['diskon'];
                   ?>
                   <tr>
                       <td><center><?php echo $no?></center></td>
@@ -68,6 +70,7 @@
                       <td><?php echo rupiah($barang_harga_modal)?></td>
                       <td><?php echo rupiah($harga_normal)?></td>
                       <td><?php echo $tanggal?></td>
+                      <td><?php echo $diskon." %"?></td>
                       <td>
                           <a href="#" style="margin-right: 10px; margin-left: 20px;" data-toggle="modal" data-target="#editdata<?php echo $barang_id?>"><span class="ti-pencil"></span></a>
                           <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $barang_id?>"><span class="ti-trash"></span></a>
@@ -140,6 +143,7 @@
                     $tanggal = $i['tanggal'];
                     $bnr_id = $i['bnr_id'];
                     $harga_normal = $i['bnr_harga'];
+                    $diskon = $i['diskon'];
                   ?>
         <!-- Modal edit Data -->
           <div class="modal" tabindex="-1" role="dialog" id="editdata<?php echo $barang_id?>">
@@ -160,13 +164,13 @@
                                     <input class="form-control form-white" type="text" name="nama_barang" value="<?php echo $barang_nama?>" required/>
                                 </div>
                                 <div class="col-md-12">
-                                    <label class="control-label">Stock Awal</label>
-                                    <input class="form-control form-white" type="number" name="stock_awal" value="<?php echo $barang_stock_awal?>" required/>
+                                    <label class="control-label">Stock Awal : <?= $barang_stock_awal?> | Stock Akhir : <?= $barang_stock_akhir?></label>
+                                    <input class="form-control form-white" type="number" name="stock" placeholder="masukkan jumlah stock yang ingin ditambah" />
                                 </div>
-                                <div class="col-md-12">
+                                <!-- <div class="col-md-12">
                                     <label class="control-label">Stock Akhir</label>
                                     <input class="form-control form-white"  type="number" name="stock_akhir" value="<?php echo $barang_stock_akhir?>" required/>
-                                </div>
+                                </div> -->
                                 <div class="col-md-12">
                                     <label class="control-label">Harga Modal</label>
                                     <input class="form-control form-white money"  type="text" name="harga_modal" value="<?php echo $barang_harga_modal?>" required/>
@@ -174,6 +178,10 @@
                                 <div class="col-md-12">
                                     <label class="control-label">Harga Normal</label>
                                     <input class="form-control form-white money"  type="text" name="harga_normal" value="<?php echo $harga_normal?>" required/>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="control-label">Diskon</label>
+                                    <input class="form-control form-white money"  type="number" name="diskon" value="<?php echo $diskon?>" required/>
                                 </div>
                                 <div class="col-md-12">
                                     <label class="control-label">Foto Barang</label>

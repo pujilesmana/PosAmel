@@ -20,6 +20,10 @@
         <li>
           <a href="<?php echo base_url()?>Admin/Pemesanan/Kurir"><i class="ti-calendar"></i><span class="right-nav-text">Kurir</span> </a>
         </li>
+
+        <li>
+          <a href="<?php echo base_url()?>Admin/Pemesanan/metode_pembayaran"><i class="ti-calendar"></i><span class="right-nav-text">Metode Pembayaran</span> </a>
+        </li>
         
          <!-- <li>
           <a href="javascript:void(0);" data-toggle="collapse" data-target="#Barang">

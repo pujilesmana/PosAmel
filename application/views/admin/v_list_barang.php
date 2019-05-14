@@ -78,7 +78,6 @@
                     <tr>
                       <th colspan="4"><center>Jumlah</center></th>
                       <th><?php echo rupiah($jumlah)?></th>
-                      <!-- <th></th> -->
                     </tr>
               </tbody>
            </table>
@@ -87,19 +86,6 @@
         </div>   
       </div>
 
-        <?php
-                    $no = 0 ;
-                    foreach($listbarang->result_array() as $i) :
-                      $no++;
-                      $lb_id = $i['lb_id'];
-                      $pemesanan_nama = $i['pemesanan_nama'];
-                      $pemesanan_id = $i['pemesanan_id'];
-                      $barang_id = $i['barang_id'];
-                      $qty = $i['lb_qty'];
-                      $barang_nama = $i['barang_nama'];
-                      $bnr_harga = $i['bnr_harga'];
-                      $total = $i['total'];
-                  ?>
        <!-- Modal Add Barang Reseller-->
         <div class="modal" tabindex="-1" role="dialog" id="kurir">
             <div class="modal-dialog modal-lg">
@@ -113,7 +99,7 @@
                             <div class="row">
                                 <div class="form-group col-md-12 mt-10" id="dynamic_field">
                                         <div class="row"> 
-                                          <input type="hidden" name="pemesanan_id" value="<?php echo $pemesanan_id?>">
+                                          <input type="hidden" name="pemesanan_id" value="<?php echo $p_id?>">
                                           <div class="col-md-8">
                                             <label class="control-label">Barang</label>
                                             <select class="form-control" name="barang[]" required>
@@ -146,7 +132,6 @@
                 </div>
             </div>
         </div>
-        <?php endforeach;?>
 
       <?php
                     $no = 0 ;

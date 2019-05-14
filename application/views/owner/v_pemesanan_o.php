@@ -17,7 +17,7 @@
       <div class="col-xl-12 mb-30">     
         <div class="card card-statistics h-100"> 
           <div class="card-body">
-            <!-- <div class="col-xl-12 mb-10" style="display: flex">
+            <div class="col-xl-12 mb-10" style="display: flex">
               <div class="col-md-6">
                 <a href="" data-toggle="modal" data-target="#tambah-pesanan-non-reseller" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Customer
@@ -28,7 +28,7 @@
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Reseller
                 </a>
               </div>
-            </div> -->
+            </div>
             <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered p-0">
               <thead>
@@ -40,6 +40,7 @@
                       <th>Alamat</th>
                       <th>Kurir</th>
                       <th>Asal Transaksi</th>
+                      <th>Metode Pembayaran</th>
                       <th>Total Harga</th>
                       <th>List Barang</th> 
                       <th width="50"><center>Aksi</center></th>
@@ -61,6 +62,8 @@
                       $hp = $i['pemesanan_hp'];
                       $alamat = $i['pemesanan_alamat'];
                       $kurir_id = $i['kurir_id'];
+                      $mp_id1 = $i['mp_id'];
+                      $mp_nama = $i['mp_nama'];
                       $level = $i['level'];
                       $kurir_nama = $i['kurir_nama'];
                       $at_id = $i['at_id'];
@@ -86,11 +89,12 @@
                       <td><?php echo $alamat?></td>
                       <td><?php echo $kurir_nama?></td>
                       <td><?php echo $at_nama?></td>
+                      <td><?php echo $mp_nama?></td>
                       <td><?php echo rupiah($jumlah)?></td>
                       <td><a href="<?php echo base_url()?>Owner/Barang/list_barang/<?php echo $pemesanan_id?>/<?php echo $level?>" target="_blank" class="btn btn-primary">List Barang</a></td>
                       <td>
                           <a href="#" style="margin-right: 10px; margin-left: 10px;" data-toggle="modal" data-target="#editdata<?php echo $pemesanan_id?>"><span class="ti-pencil"></span></a>
-                          <!-- <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $pemesanan_id?>"><span class="ti-trash"></span></a> -->
+                          <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $pemesanan_id?>"><span class="ti-trash"></span></a>
                       </td>
                     </tr>
                   <?php endforeach;?>
@@ -109,7 +113,7 @@
                         <h5 class="modal-title">Tambah Pesanan Non Reseller</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Admin/Pemesanan/savepemesananNR" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Owner/Barang/savepemesananNR" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="col-md-12">
@@ -156,6 +160,20 @@
                                   <?php endforeach;?>
                                   </select>
                                  </div>
+                                 <div class="col-md-12">
+                                  <label class="control-label">Metode_Pembayaran</label>
+                                  <select class="form-control" name="metpem" required>
+                                    <option selected value="">Pilih</option>
+                                    <?php
+                                      foreach($metode_pembayaran->result_array() as $i) :
+                                        $mp_id = $i['mp_id'];
+                                        $mp_nama = $i['mp_nama'];
+                                        $mp_tanggal = $i['mp_tanggal'];
+                                    ?>
+                                    <option value="<?php echo $mp_id?>"><?php echo $mp_nama?></option>
+                                  <?php endforeach;?>
+                                  </select>
+                                 </div>
                                       <div class="form-group col-md-12 mt-10" id="dynamic_field">
                                         <div class="row"> 
                                           <div class="col-md-8">
@@ -199,7 +217,7 @@
                         <h5 class="modal-title">Tambah Pesanan Reseller</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Admin/Pemesanan/savepemesananR" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Owner/Barang/savepemesananR" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="col-md-12">
@@ -243,6 +261,20 @@
                                         $kurir_tanggal = $i['kurir_tanggal'];
                                     ?>
                                     <option value="<?php echo $kurir_id?>"><?php echo $kurir_nama?></option>
+                                  <?php endforeach;?>
+                                  </select>
+                                 </div>
+                                 <div class="col-md-12">
+                                  <label class="control-label">Metode_Pembayaran</label>
+                                  <select class="form-control" name="metpem" required>
+                                    <option selected value="">Pilih</option>
+                                    <?php
+                                      foreach($metode_pembayaran->result_array() as $i) :
+                                        $mp_id = $i['mp_id'];
+                                        $mp_nama = $i['mp_nama'];
+                                        $mp_tanggal = $i['mp_tanggal'];
+                                    ?>
+                                    <option value="<?php echo $mp_id?>"><?php echo $mp_nama?></option>
                                   <?php endforeach;?>
                                   </select>
                                  </div>
@@ -295,6 +327,8 @@
             $kurir_nama = $i['kurir_nama'];
             $at_id1 = $i['at_id'];
             $at_nama = $i['at_nama'];
+            $mp_id1 = $i['mp_id'];
+                      $mp_nama = $i['mp_nama'];
         ?>
         <!-- Modal edit Data -->
           <div class="modal" tabindex="-1" role="dialog" id="editdata<?php echo $pemesanan_id?>">
@@ -304,7 +338,7 @@
                         <h5 class="modal-title">Edit Data</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Admin/Pemesanan/edit_pesanan" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Owner/Barang/edit_pesanan" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="col-md-12">
@@ -361,6 +395,24 @@
                                     ?>
                                   </select>
                                  </div>
+                                 <div class="col-md-12">
+                                  <label class="control-label">Metode Pembayaran</label>
+                                  <select class="form-control" name="mp" required>
+                                    <option selected value="">Pilih</option>
+                                    <?php
+                                      foreach($metode_pembayaran->result_array() as $i) :
+                                        $mp_id = $i['mp_id'];
+                                        $mp_nama = $i['mp_nama'];
+                                        $mp_tanggal = $i['mp_tanggal'];
+                                        if($mp_id1 == $mp_id){
+                                          echo "<option selected value='$mp_id'>$mp_nama</option>";
+                                        }else{
+                                          echo "<option value='$mp_id'>$mp_nama</option>";
+                                        }
+                                       endforeach;
+                                    ?>
+                                  </select>
+                                 </div>
                             </div>          
                     </div>
                     <div class="modal-footer">
@@ -388,7 +440,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body p-20">
-                        <form action="<?php echo base_url()?>Admin/Pemesanan/hapus_pesanan" method="post">
+                        <form action="<?php echo base_url()?>Owner/Barang/hapus_pesanan" method="post">
                             <div class="row">
                                 <div class="col-md-12">
                                     <input type="hidden" name="pemesanan_id" value="<?php echo $pemesanan_id?>"/> 

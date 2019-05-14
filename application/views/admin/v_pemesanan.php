@@ -18,14 +18,19 @@
         <div class="card card-statistics h-100"> 
           <div class="card-body">
             <div class="col-xl-12 mb-10" style="display: flex">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <a href="" data-toggle="modal" data-target="#tambah-pesanan-non-reseller" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Customer
                 </a>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <a href="" data-toggle="modal" data-target="#reseller" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Reseller
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a href="<?= base_url()?>Owner/Transaksi/cetak_transaksi" target="blank" class="btn btn-success btn-block ripple m-t-20">
+                  <i class="fa fa-print pr-2"></i> Cetak
                 </a>
               </div>
             </div>
@@ -40,6 +45,7 @@
                       <th>Alamat</th>
                       <th>Kurir</th>
                       <th>Asal Transaksi</th>
+                      <th>Metode Pembayaran</th>
                       <th>Total Harga</th>
                       <th>List Barang</th> 
                       <th width="50"><center>Aksi</center></th>
@@ -61,6 +67,8 @@
                       $hp = $i['pemesanan_hp'];
                       $alamat = $i['pemesanan_alamat'];
                       $kurir_id = $i['kurir_id'];
+                      $mp_id1 = $i['mp_id'];
+                      $mp_nama = $i['mp_nama'];
                       $level = $i['level'];
                       $kurir_nama = $i['kurir_nama'];
                       $at_id = $i['at_id'];
@@ -86,11 +94,12 @@
                       <td><?php echo $alamat?></td>
                       <td><?php echo $kurir_nama?></td>
                       <td><?php echo $at_nama?></td>
+                      <td><?php echo $mp_nama?></td>
                       <td><?php echo rupiah($jumlah)?></td>
                       <td><a href="<?php echo base_url()?>Admin/Pemesanan/list_barang/<?php echo $pemesanan_id?>/<?php echo $level?>" target="_blank" class="btn btn-primary">List Barang</a></td>
                       <td>
                           <a href="#" style="margin-right: 10px; margin-left: 10px;" data-toggle="modal" data-target="#editdata<?php echo $pemesanan_id?>"><span class="ti-pencil"></span></a>
-                          <!-- <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $pemesanan_id?>"><span class="ti-trash"></span></a> -->
+                          <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $pemesanan_id?>"><span class="ti-trash"></span></a>
                       </td>
                     </tr>
                   <?php endforeach;?>
@@ -153,6 +162,20 @@
                                         $kurir_tanggal = $i['kurir_tanggal'];
                                     ?>
                                     <option value="<?php echo $kurir_id?>"><?php echo $kurir_nama?></option>
+                                  <?php endforeach;?>
+                                  </select>
+                                 </div>
+                                 <div class="col-md-12">
+                                  <label class="control-label">Metode_Pembayaran</label>
+                                  <select class="form-control" name="metpem" required>
+                                    <option selected value="">Pilih</option>
+                                    <?php
+                                      foreach($metode_pembayaran->result_array() as $i) :
+                                        $mp_id = $i['mp_id'];
+                                        $mp_nama = $i['mp_nama'];
+                                        $mp_tanggal = $i['mp_tanggal'];
+                                    ?>
+                                    <option value="<?php echo $mp_id?>"><?php echo $mp_nama?></option>
                                   <?php endforeach;?>
                                   </select>
                                  </div>
@@ -246,6 +269,20 @@
                                   <?php endforeach;?>
                                   </select>
                                  </div>
+                                 <div class="col-md-12">
+                                  <label class="control-label">Metode Pembayaran</label>
+                                  <select class="form-control" name="metpem" required>
+                                    <option selected value="">Pilih</option>
+                                    <?php
+                                      foreach($metode_pembayaran->result_array() as $i) :
+                                        $mp_id = $i['mp_id'];
+                                        $mp_nama = $i['mp_nama'];
+                                        $mp_tanggal = $i['mp_tanggal'];
+                                    ?>
+                                    <option value="<?php echo $mp_id?>"><?php echo $mp_nama?></option>
+                                  <?php endforeach;?>
+                                  </select>
+                                 </div>
                                       <div class="form-group col-md-12 mt-10" id="dynamic_field1">
                                         <div class="row"> 
                                           <div class="col-md-8">
@@ -295,6 +332,8 @@
             $kurir_nama = $i['kurir_nama'];
             $at_id1 = $i['at_id'];
             $at_nama = $i['at_nama'];
+            $mp_id1 = $i['mp_id'];
+            $mp_nama = $i['mp_nama'];
         ?>
         <!-- Modal edit Data -->
           <div class="modal" tabindex="-1" role="dialog" id="editdata<?php echo $pemesanan_id?>">
@@ -316,10 +355,10 @@
                                     <label class="control-label">No HP</label>
                                     <input class="form-control form-white" type="number" name="hp" value="<?php echo $hp?>" required/>
                                 </div>
-                                <div class="col-md-12">
+ <!--                                <div class="col-md-12">
                                     <label class="control-label">Tanggal</label>
                                     <input class="form-control form-white" type="date" name="tanggal"/>
-                                </div>
+                                </div> -->
                                 <div class="col-md-12">
                                     <label class="control-label">Alamat</label>
                                     <input class="form-control form-white"  type="text" name="alamat" value="<?php echo $alamat?>" required/>
@@ -356,6 +395,24 @@
                                           echo "<option selected value='$kurir_id'>$kurir_nama</option>";
                                         }else{
                                           echo "<option value='$kurir_id'>$kurir_nama</option>";
+                                        }
+                                       endforeach;
+                                    ?>
+                                  </select>
+                                 </div>
+                                 <div class="col-md-12">
+                                  <label class="control-label">Metode Pembayaran</label>
+                                  <select class="form-control" name="mp" required>
+                                    <option selected value="">Pilih</option>
+                                    <?php
+                                      foreach($metode_pembayaran->result_array() as $i) :
+                                        $mp_id = $i['mp_id'];
+                                        $mp_nama = $i['mp_nama'];
+                                        $mp_tanggal = $i['mp_tanggal'];
+                                        if($mp_id1 == $mp_id){
+                                          echo "<option selected value='$mp_id'>$mp_nama</option>";
+                                        }else{
+                                          echo "<option value='$mp_id'>$mp_nama</option>";
                                         }
                                        endforeach;
                                     ?>

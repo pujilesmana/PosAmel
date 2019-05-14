@@ -67,13 +67,14 @@
                       <td><?php echo $qty?></td>
                       <td><?php echo rupiah($br_harga)?></td>
                       <td><?php echo rupiah($total)?></td>
+                      
                       <td>
                           <center><a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata"><span class="ti-trash"></span></a></center>
                       </td>
                     </tr>
                     <?php endforeach;?>
                     <tr>
-                      <th colspan="3"><center>Jumlah</center></th>
+                      <th colspan="4"><center>Jumlah</center></th>
                       <th><?php echo rupiah($jumlah)?></th>
                     </tr>
               </tbody>
@@ -97,6 +98,7 @@
                                 <div class="form-group col-md-12 mt-10" id="dynamic_field1">
                                         <div class="row"> 
                                           <div class="col-md-8">
+                                            <input type="hidden" name="pemesanan_id" value="<?php echo $p_id?>">
                                             <label class="control-label">Barang</label>
                                             <select class="form-control" name="barang[]" required>
                                                 <option selected value="">Pilih</option>

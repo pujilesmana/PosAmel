@@ -18,16 +18,19 @@
 
 <body>
      <div class="cointainer" style="display: flex">
-        <div class="col-md-3" style="margin-top: 20px" >
-          <img style="width: 80px; margin-left: 80px; margin-right: auto;" src="<?php echo base_url()?>assets/admin/images/logo.jpeg">
+        <div class="col-md-4" style="margin-top: 20px">
+          <img style="width: 80px; margin-left: 120px; margin-right: auto;" src="<?php echo base_url()?>assets/admin/images/logo.jpeg">
           <p style="text-align: center;margin-bottom: 0;"><b>MSGlow Palembang</b></p>
-          <p style="text-align: center;font-size: 14px;">Alamat : Jl. Sukabangun 2 soak simpur. Komplek horizon estate blok c no.4 Palembang</p>
-          <p style="font-size: 12px;margin-bottom: 0;margin-left: 50px;"><b>WA</b> : 0822-8188-1763</p>
-          <p style="font-size: 12px;margin-bottom: 0;margin-left: 50px;"><b>FB</b> : Msglow Palembang</p>
-          <p style="font-size: 12px;margin-bottom: 0;margin-left: 50px;"><b>IG</b> : @msglow_palembang</p>
-          <p style="font-size: 12px;margin-bottom: 0;margin-left: 50px;"><b>Shopee</b> : sabiansabia</p>
-          <p style="font-size: 12px;margin-bottom: 0;margin-left: 50px;"><b>Line</b> : sabiansabia</p>
-          <p style="font-size: 12px;margin-bottom: 0;margin-left: 50px;"><b>Bukalapak</b> : Msglow Palembang</p>
+          <div class="col-md-6" style="float: right;">
+            <p style="font-size: 12px;margin-bottom: 0;"><b>WA</b> : 0822-8188-1763</p>
+            <p style="font-size: 12px;margin-bottom: 0;"><b>FB</b> : Msglow Palembang</p>
+            <p style="font-size: 12px;margin-bottom: 0;"><b>IG</b> : @msglow_palembang</p>
+          </div>
+          <div class="col-md-6">
+            <p style="font-size: 12px;margin-bottom: 0;"><b>Shopee</b> : sabiansabia</p>
+            <p style="font-size: 12px;margin-bottom: 0;"><b>Line</b> : sabiansabia</p>
+            <p style="font-size: 12px;margin-bottom: 0;"><b>Bukalapak</b> : Msglow Palembang</p>
+          </div>
         </div>
         <div class="col-md-5" style="margin-top: 20px">
           <h5>Kepada : </h5>
@@ -44,7 +47,7 @@
           <p style="font-size: 20px; "><?php echo $pemesanan_hp?></p>
         
         </div>
-        <div class="col-md-4" style="margin-top: 20px;" >
+        <div class="col-md-3" style="margin-top: 20px;" >
           <p  style="font-size: 20px;"><b>Order (<?php echo $tanggal?>)</b></p>
           <?php endforeach;?>
           <?php
@@ -53,23 +56,26 @@
               $barang_nama = $i['barang_nama'];
           ?>
           <div class="col-md-12" style="padding-left:0;display: flex">
-            <div class="col-md-6" style="padding-left:0;">
-              <p  style="font-size: 20px;"><?php echo $barang_nama?></p>
+            <div class="col-md-10" style="padding-left:0;">
+              <p  style="font-size: 15px;margin-bottom: 0;"><?php echo $barang_nama?></p>
             </div>
             <div class="col-md-6" style="padding-left:0;">
-              <p  style="font-size: 20px;"><?php echo $qty?> item</p>
+              <p  style="font-size: 15px;margin-bottom: 0;"><?php echo $qty?> item</p>
             </div>
           </div>
         <?php endforeach;?>
-        <p style="border: 2px solid;border-radius: 5px;" class="text-center"><b><?php echo $kurir?></b></p>
-        </div>
-          
-          
+        <p style="border: 2px solid;border-radius: 5px;margin-top:10px;margin-bottom: 0" class="text-center"><b><?php echo $kurir?></b></p>
+        <p style="border: 2px solid;border-radius: 5px;margin-top: 5px;margin-bottom: 0" class="text-center"><b><?php echo $mp_nama?></b></p>
+        <p style="border: 2px solid;border-radius: 5px;margin-top: 5px;" class="text-center"><b>User</b> : <?php echo $nama?></p>
+
+        </div>        
       </div>
+    <hr style="color: black;margin-top: 10px;margin-bottom: 10px; border-color: black;width: 100%;">
 
 </body>
 </html>
 
 <script type="text/javascript">
  window.print();
+ window.close();
 </script>

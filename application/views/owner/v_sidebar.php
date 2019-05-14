@@ -24,6 +24,9 @@
         <li>
           <a href="<?php echo base_url()?>Owner/Barang/pemesanan"><i class="ti-world"></i><span class="right-nav-text">Pemesanan</span> </a>
         </li>
+        <li>
+          <a href="<?php echo base_url()?>Owner/User"><i class="ti-user"></i><span class="right-nav-text">User</span> </a>
+        </li>
     </ul>
   </div> 
 </div>

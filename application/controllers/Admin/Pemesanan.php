@@ -24,6 +24,7 @@
 		       $y['title'] = "Pemesanan";
 		       $x['asal_transaksi'] = $this->m_pemesanan->getAllAT();
 		       $x['kurir'] = $this->m_pemesanan->getAllkurir();
+		       $x['metode_pembayaran'] = $this->m_pemesanan->getAllMetpem();
 		       $x['nonreseller'] = $this->m_barang->getDataNonReseller1();
 		       $x['reseller'] = $this->m_barang->getAllBarangR();
 		       $x['datapesanan'] = $this->m_pemesanan->getPemesananCurdate();
@@ -42,12 +43,13 @@
 	  		$alamat = $this->input->post('alamat');
 	  		$asal_transaksi = $this->input->post('at');
 	  		$kurir = $this->input->post('kurir');
+	  		$metpem = $this->input->post('metpem');
 	  		$tanggal = $this->input->post('tanggal');
 	  		$level = 2;
 	  		$barang_id = $this->input->post('barang');
 	  		$qty = $this->input->post('qty');
 
-	  		$this->m_pemesanan->save_pesanan($nama_pemesan,$tanggal,$no_hp,$alamat,$level,$kurir,$asal_transaksi);
+	  		$this->m_pemesanan->save_pesanan($nama_pemesan,$tanggal,$no_hp,$alamat,$level,$kurir,$asal_transaksi,$metpem);
 			$x=$this->m_pemesanan->getIdbyName($nama_pemesan);
 			$z=$x->row_array();
 			$pemesanan_id=$z['pemesanan_id'];
@@ -104,18 +106,26 @@
 	       	redirect($this->agent->referrer());
 	  	}
 
+	  	function hapus_pesanan(){
+	  		$pemesanan_id = $this->input->post('pemesanan_id');
+	  		$this->m_pemesanan->hapus_pesanan($pemesanan_id);
+	  		echo $this->session->set_flashdata('msg','hapus');
+	       	redirect('Admin/Pemesanan');	
+	  	}
+
  	  	function savepemesananR(){
 	  		$nama_pemesan = $this->input->post('nama_pemesan');
 	  		$no_hp = $this->input->post('hp');
 	  		$alamat = $this->input->post('alamat');
 	  		$asal_transaksi = $this->input->post('at');
 	  		$kurir = $this->input->post('kurir');
+	  		$metpem = $this->input->post('metpem');
 	  		$level = 1;
 	  		$tanggal = $this->input->post('tanggal');
 	  		$barang_id = $this->input->post('barang');
 	  		$qty = $this->input->post('qty');
 
-	  		$this->m_pemesanan->save_pesanan($nama_pemesan,$tanggal,$no_hp,$alamat,$level,$kurir,$asal_transaksi);
+	  		$this->m_pemesanan->save_pesanan($nama_pemesan,$tanggal,$no_hp,$alamat,$level,$kurir,$asal_transaksi,$metpem);
 			$x=$this->m_pemesanan->getIdbyName($nama_pemesan);
 			$z=$x->row_array();
 			$pemesanan_id=$z['pemesanan_id'];
@@ -137,21 +147,13 @@
 	  		$alamat = $this->input->post('alamat');
 	  		$asal_transaksi = $this->input->post('at');
 	  		$kurir = $this->input->post('kurir');
-	  		$tanggal = $this->input->post('tanggal');
+	  		$metode_pembayaran = $this->input->post('mp');
+	  		// $tanggal = $this->input->post('tanggal');
 
-	  		$this->m_pemesanan->edit_pesanan($pemesanan_id,$nama_pemesan,$tanggal,$no_hp,$alamat,$kurir,$asal_transaksi);
+	  		$this->m_pemesanan->edit_pesanan($pemesanan_id,$nama_pemesan,$no_hp,$alamat,$kurir,$asal_transaksi,$metode_pembayaran);
 	  		echo $this->session->set_flashdata('msg','update');
 	       	redirect('Admin/Pemesanan');	
 	  	}
-
-	  	function hapus_pesanan(){
-	  		$pemesanan_id = $this->input->post('pemesanan_id');
-	  		$this->m_pemesanan->hapus_pesanan($pemesanan_id);
-	  		echo $this->session->set_flashdata('msg','hapus');
-	       	redirect('Admin/Pemesanan');	
-	  	}
-
-
 
  	  	function list_barang($pemesanan_id){
  	  		if($this->session->userdata('akses') == 2 && $this->session->userdata('masuk') == true){
@@ -190,12 +192,14 @@
  	  		$level = $this->uri->segment(5);
  	  		   if($level == 1){
  	  		   	$y['title'] = "List Barang Pemesan";
- 	  		   		$x['p_id'] = $pemesanan_id;
+ 	  		   	   $x['p_id'] = $pemesanan_id;
  	  		   	   $x['lvl'] =$level;	
 	 	  		   $x['listbarang'] = $this->m_list_barang->getLBRbyid($pemesanan_id);	
 	 	  		   $x['pemesan'] = $this->m_pemesanan->getIdbyid($pemesanan_id);
 	 	  		    $a = $this->m_pemesanan->getIdbyid($pemesanan_id)->row_array();
  	  		   	   $x['kurir'] = $a['kurir_nama'];
+ 	  		   	   $x['mp_nama'] = $a['mp_nama'];
+ 	  		  	   $x['nama'] = $this->session->userdata('nama');
 			       $this->load->view('admin/v_cetak_invoice',$x);
  	  		   }elseif($level == 2){
  	  		   	   $y['title'] = "List Barang Pemesan";
@@ -205,6 +209,8 @@
  	  		   	   $x['pemesan'] = $this->m_pemesanan->getIdbyid($pemesanan_id);
  	  		   	   $a = $this->m_pemesanan->getIdbyid($pemesanan_id)->row_array();
  	  		   	   $x['kurir'] = $a['kurir_nama'];
+ 	  		   	   $x['mp_nama'] = $a['mp_nama'];
+ 	  		   	   $x['nama'] = $this->session->userdata('nama');
 			       $this->load->view('admin/v_cetak_invoice',$x);
  	  		   }
  	  	}
@@ -277,6 +283,41 @@
 	  		$this->m_pemesanan->hapus_kurir($id);
 	  		echo $this->session->set_flashdata('msg','delete');
 	       	redirect('Admin/Pemesanan/kurir');
+	  	}
+
+	  	function metode_pembayaran(){
+	  		if($this->session->userdata('akses') == 2 && $this->session->userdata('masuk') == true){
+		       $y['title'] = "Metode Pembayaran";
+		       $x['metpem'] = $this->m_pemesanan->getAllMetpem();
+		       $this->load->view('v_header',$y);
+		       $this->load->view('admin/v_sidebar');
+		       $this->load->view('admin/v_metode_pembayaran',$x);
+		    }
+		    else{
+		       redirect('Login');
+		    }
+	  	}
+
+	  	function saveMetodePembayaran(){
+	  		$metpem_nama = $this->input->post('mp_nama');
+	  		$this->m_pemesanan->save_Metpem($metpem_nama);
+	  		echo $this->session->set_flashdata('msg','success');
+	       	redirect('Admin/Pemesanan/metode_pembayaran');
+	  	}
+
+	  	function updateMetodePembayaran(){
+	  		$id = $this->input->post('mp_id');
+	  		$metpem_nama = $this->input->post('mp_nama');
+	  		$this->m_pemesanan->update_Metpem($id,$metpem_nama);
+	  		echo $this->session->set_flashdata('msg','update');
+	       	redirect('Admin/Pemesanan/metode_pembayaran');
+	  	}
+
+	  	function hapusMetodePembayaran(){
+	  		$id = $this->input->post('mp_id');
+	  		$this->m_pemesanan->hapus_Metpem($id);
+	  		echo $this->session->set_flashdata('msg','delete');
+	       	redirect('Admin/Pemesanan/metode_pembayaran');
 	  	}
 	}
 ?>
