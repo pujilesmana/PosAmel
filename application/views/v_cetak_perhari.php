@@ -4,10 +4,15 @@
 </head>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?php echo base_url()?>assets/images/logo.png" />
-
 <!-- Font -->
 <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style type="text/css" media="print">
+
+@page {size: landscape;}
+
+
+</style>
 <body>
      <div>
           
@@ -15,17 +20,17 @@
             <center><h1>Laporan Transaksi</h1></center>
           </div>
           <hr style="margin-left:10px;margin-right:10px;">
-          <hr>
           <br>
 
              <table border="1" cellpadding="7" width="100%" style="border-style: solid;border-width: thin;border-collapse: collapse;" >
               <tr>
                 <th width="5">No</th>
-                      <th>Nama Pemesan</th>
+                      <th width="50">Nama Pemesan</th>
                       <th>No HP</th>
-                      <th>Alamat</th>
-                      <th>Kurir</th>
-                      <th>Asal Transaksi</th>
+                      <th><center>Alamat</center></th>
+                      <th width="20">Kurir</th>
+                      <th width="30">Asal Transaksi</th>
+                      <th>Barang</th>
                       <th>Total Omset</th>
               </tr>
                   <?php
@@ -58,11 +63,7 @@
                         $c=$q->row_array();
                         $omset = $c['total_keseluruhan'];
                         $untung = $c['total'];
-
-
                       }
-
-                      
                   ?>
                     <tr>
                       <td><center><?php echo $no?></center></td>
@@ -71,12 +72,24 @@
                       <td><?php echo $alamat?></td>
                       <td><?php echo $kurir_nama?></td>
                       <td><?php echo $at_nama?></td>
+                      <td>
+                        <?php
+                          $z=$this->db->query("SELECT a.lb_id,a.pemesanan_id,a.lb_qty,a.barang_id,b.pemesanan_nama,c.barang_nama,d.bnr_harga, a.lb_qty * d.bnr_harga AS total FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+
+                          foreach ($z->result_array() as $i ) {
+                            $barang_nama = $i['barang_nama'];
+                            echo "- ".$barang_nama."<br>";
+                          }
+                          
+                          
+                        ?>
+                      </td>
                       <td><?php echo rupiah($omset)?></td>
                     </tr>
                   <?php endforeach;?>
                   <tfoot>
                     <tr>
-                      <th colspan="6"><center>Jumlah</center></th>
+                      <th colspan="7"><center>Jumlah</center></th>
                       <th><?php echo rupiah($total_omset)?></th>
                     </tr>
                   </tfoot>

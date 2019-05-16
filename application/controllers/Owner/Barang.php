@@ -32,15 +32,16 @@
 		    }
 	  	}
 
-	  	function pemesanan(){
+	  	function pemesanan($level){
 	  		if($this->session->userdata('akses') == 1 && $this->session->userdata('masuk') == true){
 		       $y['title'] = "Pemesanan";
+		       $x['level1'] = $level;
 		       $x['asal_transaksi'] = $this->m_pemesanan->getAllAT();
 		       $x['kurir'] = $this->m_pemesanan->getAllkurir();
 		       $x['metode_pembayaran'] = $this->m_pemesanan->getAllMetpem();
 		       $x['nonreseller'] = $this->m_barang->getDataNonReseller1();
 		       $x['reseller'] = $this->m_barang->getAllBarangR();
-		       $x['datapesanan'] = $this->m_pemesanan->getPemesanan();
+		       $x['datapesanan'] = $this->m_pemesanan->getPemesanan1($level);
 		       $this->load->view('v_header',$y);
 		       $this->load->view('owner/v_sidebar');
 		       $this->load->view('owner/v_pemesanan_o',$x);
@@ -118,7 +119,7 @@
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect('Owner/Barang/pemesanan');		  	
+	       	redirect('Owner/Barang/pemesanan/2');		  	
  	  	}
 
  	  	function savepemesananR(){
@@ -145,7 +146,7 @@
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect('Owner/Barang/pemesanan');	  	
+	       	redirect('Owner/Barang/pemesanan/1');	  	
  	  	}
 
  	  	function edit_pesanan(){
@@ -160,14 +161,14 @@
 
 	  		$this->m_pemesanan->edit_pesanan1($pemesanan_id,$nama_pemesan,$tanggal,$no_hp,$alamat,$kurir,$asal_transaksi,$metode_pembayaran);
 	  		echo $this->session->set_flashdata('msg','update');
-	       	redirect('Owner/Barang/pemesanan');	
+	       	redirect($this->agent->referrer());	
 	  	}
 
 	  	function hapus_pesanan(){
 	  		$pemesanan_id = $this->input->post('pemesanan_id');
 	  		$this->m_pemesanan->hapus_pesanan($pemesanan_id);
 	  		echo $this->session->set_flashdata('msg','hapus');
-	       	redirect('Owner/Barang/pemesanan');	
+	       	redirect($this->agent->referrer());	
 	  	}
 
  	  	function list_barang($pemesanan_id){
@@ -370,9 +371,8 @@
                     $path='./assets/images/'.$images;
                     unlink($path);
 			  		$harga_modal = str_replace(".", "", $this->input->post('harga_modal'));
-			  		$diskon = $this->input->post('diskon');
 
-			  		$this->m_barang->update_barangImage($barang_id,$nama_barang, $stock, $harga_modal, $gambar, $diskon);
+			  		$this->m_barang->update_barangImage($barang_id,$nama_barang, $stock, $harga_modal, $gambar);
 			  		$this->m_barang->update_barang_non_reseller($bnr_id, $harga_non_reseller);
 
 					echo $this->session->set_flashdata('msg','success_non_reseller');
@@ -387,9 +387,8 @@
 			  	$stock = $this->input->post('stock');
 			  	$barang_id=$this->input->post('barang_id');
 			  	$bnr_id=$this->input->post('bnr_id');
-			  	$diskon = $this->input->post('diskon');
 			  	$harga_modal = str_replace(".", "", $this->input->post('harga_modal'));
-			  	$this->m_barang->update_barang_noImage($barang_id,$nama_barang, $stock, $harga_modal, $diskon);
+			  	$this->m_barang->update_barang_noImage($barang_id,$nama_barang, $stock, $harga_modal);
 			  	$this->m_barang->update_barang_non_reseller($bnr_id, $harga_non_reseller);
 	        	echo $this->session->set_flashdata('msg','success_non_reseller');
 				redirect('Owner/Barang');

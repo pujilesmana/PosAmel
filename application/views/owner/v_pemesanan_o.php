@@ -18,16 +18,20 @@
         <div class="card card-statistics h-100"> 
           <div class="card-body">
             <div class="col-xl-12 mb-10" style="display: flex">
-              <div class="col-md-6">
+              <?php if($level1 == 2) :?>
+              <div class="col-md-12">
                 <a href="" data-toggle="modal" data-target="#tambah-pesanan-non-reseller" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Customer
                 </a>
               </div>
-              <div class="col-md-6">
+              <?php elseif($level1 == 1) :?>
+              <div class="col-md-12">
                 <a href="" data-toggle="modal" data-target="#reseller" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Reseller
                 </a>
               </div>
+              <?php endif;?>
+              
             </div>
             <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered p-0">

@@ -2,12 +2,12 @@
     <div class="page-title">
       <div class="row">
           <div class="col-sm-6">
-              <h4 class="mb-0">Data Daftar Barang</h4>              
+              <h4 class="mb-0">Data Diskon</h4>              
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-              <li class="breadcrumb-item"><a href="<?php echo base_url()?>" class="default-color">Home</a></li>
-              <li class="breadcrumb-item active">Daftar Barang</li>
+              <li class="breadcrumb-item"><a href="<?php echo base_url()?>Admin/Pemesanan" class="default-color">Home</a></li>
+              <li class="breadcrumb-item active">Diskon</li>
             </ol>
           </div>
         </div>
@@ -18,63 +18,56 @@
         <div class="card card-statistics h-100"> 
           <div class="card-body">
             <div class="col-xl-12 mb-10" style="display: flex">
-              <a href="" data-toggle="modal" data-target="#tambah-barang-non-reseller" class="btn btn-primary btn-block ripple m-t-20">
-                <i class="fa fa-plus pr-2"></i> Tambah Barang Customer
-              </a>
+              <div class="col-md-6">
+                <a href="" data-toggle="modal" data-target="#diskon" class="btn btn-primary btn-block ripple m-t-20">
+                  <i class="fa fa-plus pr-2"></i> Tambah Diskon
+                </a>
+              </div>
+              <div class="col-md-6">
+                <a href="" data-toggle="modal" data-target="#tanggal" class="btn btn-danger btn-block ripple m-t-20">
+                  <i class="fa fa-trash pr-2"></i>Hapus Diskon By Tanggal
+                </a>
+              </div>
             </div>
+            
             <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered p-0">
               <thead>
                   <tr>
-                      <th width="10">No</th>
-                      <th>Foto Barang</th>
+                      <th width="20">No</th>
                       <th>Nama Barang</th>
-                      <th>Stock Awal</th>
-                      <th>Stock Akhir</th>
-                      <th>Harga Modal</th>
-                      <th>Harga Customer</th> 
-                      <th>Tanggal Input</th>
+                      <th>Diskon</th>
+                      <th>Tanggal</th>
                       <th width="100"><center>Aksi</center></th>
                   </tr>
               </thead>
               <tbody>
-                  <?php 
-                  $no = 0;
+                <?php 
+                $no =0;
 
-                  function rupiah($angka){
-                    $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
-                    return $hasil_rupiah;
-                  }
+                function rupiah($angka){
+                      $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+                      return $hasil_rupiah;
+                    }
 
-                  foreach($nonreseller->result_array() as $i) :
+                foreach($diskon->result_array() as $i) :
                     $no++;
-                    $gambar = $i['barang_foto'];
-                    $barang_id = $i['barang_id'];
+                    $diskon_id = $i['diskon_id'];
                     $barang_nama = $i['barang_nama'];
-                    $barang_stock_awal = $i['barang_stock_awal'];
-                    $barang_stock_akhir = $i['barang_stock_akhir'];
-                    $barang_harga_modal = $i['barang_harga_modal'];
-                    $barang_level = $i['barang_level'];
-                    $tanggal = $i['tanggal'];
-                    $bnr_id = $i['bnr_id'];
-                    $harga_normal = $i['bnr_harga'];
+                    $harga_potongan = $i['potongan_harga'];
+                    $tanggal = $i['diskon_tanggal'];
                   ?>
                   <tr>
-                      <td><center><?php echo $no?></center></td>
-                      <td style="width: 8%"><img src="<?php echo base_url()?>assets/image_barang/<?php echo $gambar;?>"  style="width: 100px"></td>
-                      <td><?php echo $barang_nama?></td>
-                      <td><?php echo $barang_stock_awal?></td>
-                      <td><?php echo $barang_stock_akhir?></td>
-                      <td><?php echo rupiah($barang_harga_modal)?></td>
-                      <td><?php echo rupiah($harga_normal)?></td>
-                      <td><?php echo $tanggal?></td>
-                      <td>
-                          <a href="#" style="margin-right: 10px; margin-left: 20px;" data-toggle="modal" data-target="#editdata<?php echo $barang_id?>"><span class="ti-pencil"></span></a>
-                          <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $barang_id?>"><span class="ti-trash"></span></a>
-                          <a href="<?php echo base_url()?>Owner/Barang/History/<?php echo $barang_id?>" data-toggle="tooltip" data-placement="top" title="Lihat History Stock"><span class="ti-eye"></span></a>
+                    <td><center><?php echo $no?></center></td>
+                    <td><?= $barang_nama?></td>
+                    <td><?php echo rupiah($harga_potongan)?></td>
+                    <td><?= $tanggal?></td>
+                    <td>
+                          <a href="#" style="margin-right: 10px; margin-left: 10px;" data-toggle="modal" data-target="#editdata<?php echo $diskon_id?>"><span class="ti-pencil"></span></a>
+                          <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $diskon_id?>"><span class="ti-trash"></span></a>
                       </td>
                     </tr>
-                    <?php endforeach;?>
+                  <?php endforeach;?>
               </tbody>
            </table>
           </div>
@@ -82,42 +75,35 @@
         </div>   
       </div>
 
-        <!-- Modal Add Barang Non Reseller-->
-        <div class="modal" tabindex="-1" role="dialog" id="tambah-barang-non-reseller">
-            <div class="modal-dialog modal-lg">
+       <!-- Modal Add Barang Reseller-->
+        <div class="modal" tabindex="-1" role="dialog" id="diskon">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Barang Customer</h5>
+                        <h5 class="modal-title">Tambah Diskon</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Owner/Barang/s_barang_non_reseller" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Owner/Diskon/save_diskon" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="control-label">Nama Barang</label>
-                                    <input class="form-control form-white" type="text" name="nama_barang"  required="" />
+                                  <label class="control-label">Barang</label>
+                                  <select class="form-control" name="barang" required>
+                                    <option selected value="">Pilih</option>
+                                    <?php
+                                        foreach($barang->result_array() as $i) :
+                                          $barang_id = $i['barang_id'];
+                                          $barang_nama = $i['barang_nama'];
+                                      ?>
+                                      <option value="<?php echo $barang_id?>"><?php echo $barang_nama?></option>
+                                    <?php endforeach;?> 
+                                  </select>
                                 </div>
                                 <div class="col-md-12">
-                                    <label class="control-label">Stock Awal</label>
-                                    <input class="form-control form-white" type="number" name="stock_awal" required="" />
+                                    <label class="control-label mt-10">Diskon (% / Rp)</label>
+                                    <input class="form-control form-white money" type="text" name="diskon" required />
                                 </div>
-                                <div class="col-md-12">
-                                    <label class="control-label">Stock Akhir</label>
-                                    <input class="form-control form-white"  type="number" name="stock_akhir" required="" />
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label">Harga Modal</label>
-                                    <input class="form-control form-white money"  type="text" name="harga_modal" required="" />
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label">Harga Normal</label>
-                                    <input class="form-control form-white money"  type="text" name="harga_normal" required="" />
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label">Foto Barang</label>
-                                    <input class="form-control form-white" type="file" name="filefoto" />
-                                </div>
-                            </div>          
+                            </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger ripple" data-dismiss="modal">Close</button>
@@ -126,60 +112,60 @@
                     </form>
                 </div>
             </div>
-        </div>  
-  
+        </div>
 
-        <?php   foreach($nonreseller->result_array() as $i) :
-                    $gambar = $i['barang_foto'];
-                    $barang_id = $i['barang_id'];
-                    $barang_nama = $i['barang_nama'];
-                    $barang_stock_awal = $i['barang_stock_awal'];
-                    $barang_stock_akhir = $i['barang_stock_akhir'];
-                    $barang_harga_modal = $i['barang_harga_modal'];
-                    $barang_level = $i['barang_level'];
-                    $tanggal = $i['tanggal'];
-                    $bnr_id = $i['bnr_id'];
-                    $harga_normal = $i['bnr_harga'];
-                  ?>
-        <!-- Modal edit Data -->
-          <div class="modal" tabindex="-1" role="dialog" id="editdata<?php echo $barang_id?>">
-            <div class="modal-dialog modal-lg">
+        <!-- Modal Add Barang Reseller-->
+        <div class="modal" tabindex="-1" role="dialog" id="tanggal">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit Barang</h5>
+                        <h5 class="modal-title">Hapus Diskon</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Owner/Barang/edit_non_reseller" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Owner/Diskon/hapus_diskon_t" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="control-label">Nama Barang</label>
+                                    <label class="control-label mt-10">Tanggal</label>
+                                    <input class="form-control form-white" type="date" name="tanggal" required />
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger ripple" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success ripple save-category" id="simpan">Save</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <?php  foreach($diskon->result_array() as $i) :
+                    $no++;
+                    $diskon_id = $i['diskon_id'];
+                    $barang_id = $i['barang_id'];
+                    $barang_nama = $i['barang_nama'];
+                    $harga_potongan = $i['potongan_harga'];
+                    $tanggal = $i['diskon_tanggal'];
+                  ?>
+        <!-- Modal edit Data -->
+          <div class="modal" tabindex="-1" role="dialog" id="editdata<?php echo $diskon_id?>">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <form action="<?php echo base_url()?>Owner/Diskon/update_diskon" method="post" enctype="multipart/form-data">
+                    <div class="modal-body p-20">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="control-label">Diskon (% / Rp)</label>
+                                    <input type="hidden" name="diskon_id" value="<?php echo $diskon_id?>">
                                     <input type="hidden" name="barang_id" value="<?php echo $barang_id?>">
-                                    <input type="hidden" name="barang_foto" value="<?php echo $gambar?>">
-                                    <input type="hidden" name="bnr_id" value="<?php echo $bnr_id?>">
-                                    <input class="form-control form-white" type="text" name="nama_barang" value="<?php echo $barang_nama?>" required/>
+                                    <input class="form-control form-white money" type="text" name="diskon" value="<?php echo $harga_potongan?>" required />
                                 </div>
-                                <div class="col-md-12">
-                                    <label class="control-label">Stock Awal : <?= $barang_stock_awal?> | Stock Akhir : <?= $barang_stock_akhir?></label>
-                                    <input class="form-control form-white" type="number" name="stock" placeholder="masukkan jumlah stock yang ingin ditambah" />
-                                </div>
-                                <!-- <div class="col-md-12">
-                                    <label class="control-label">Stock Akhir</label>
-                                    <input class="form-control form-white"  type="number" name="stock_akhir" value="<?php echo $barang_stock_akhir?>" required/>
-                                </div> -->
-                                <div class="col-md-12">
-                                    <label class="control-label">Harga Modal</label>
-                                    <input class="form-control form-white money"  type="text" name="harga_modal" value="<?php echo $barang_harga_modal?>" required/>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label">Harga Normal</label>
-                                    <input class="form-control form-white money"  type="text" name="harga_normal" value="<?php echo $harga_normal?>" required/>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label">Foto Barang</label>
-                                    <input class="form-control form-white" type="file" name="filefoto" />
-                                </div>
-                            </div>  
+                            </div>          
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger ripple" data-dismiss="modal">Close</button>
@@ -191,36 +177,30 @@
         </div>
         <?php endforeach;?>
 
-        <?php foreach($nonreseller->result_array() as $i) :
-          $gambar = $i['barang_foto'];
-          $barang_id = $i['barang_id'];
-          $barang_nama = $i['barang_nama'];
-          $barang_stock_awal = $i['barang_stock_awal'];
-          $barang_stock_akhir = $i['barang_stock_akhir'];
-          $barang_harga_modal = $i['barang_harga_modal'];
-          $barang_level = $i['barang_level'];
-          $tanggal = $i['tanggal'];
-          $bnr_id = $i['bnr_id'];
-          $harga_normal = $i['bnr_harga'];
-        ?>
-        <div class="modal" tabindex="-1" role="dialog" id="hapusdata<?php echo $barang_id?>">
+        <?php foreach($diskon->result_array() as $i) :
+                    $no++;
+                    $diskon_id = $i['diskon_id'];
+                    $barang_id = $i['barang_id'];
+                    $barang_nama = $i['barang_nama'];
+                    $harga_potongan = $i['potongan_harga'];
+                    $tanggal = $i['diskon_tanggal'];
+                  ?>
+        <div class="modal" tabindex="-1" role="dialog" id="hapusdata<?php echo $diskon_id?>">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Hapus Barang</h5>
+                        <h5 class="modal-title">Hapus Data</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body p-20">
-                        <form action="<?php echo base_url()?>Owner/Barang/hapus_non_reseller" method="post">
+                        <form action="<?php echo base_url()?>Owner/Diskon/hapus_diskon" method="post">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="hidden" name="barang_id" value="<?php echo $barang_id?>"/> 
-                                    <input type="hidden" name="barang_foto" value="<?php echo $gambar?>"/>
-                                    <input type="hidden" name="bnr_id" value="bnr_id">
+                                    <input type="hidden" name="diskon_id" value="<?php echo $diskon_id?>">
+                                    <input type="hidden" name="barang_id" value="<?php echo $barang_id?>"> 
                                     <p>Apakah kamu yakin ingin menghapus data ini?</i></b></p>
                                 </div>
                             </div>
-                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger ripple" data-dismiss="modal">Tidak</button>
@@ -351,7 +331,7 @@
         <script type="text/javascript">
                 $.toast({
                     heading: 'Update',
-                    text: "Data Harian berhasil Diupdate.",
+                    text: "Data berhasil Diupdate.",
                     showHideTransition: 'slide',
                     icon: 'success',
                     loader: true,        // Change it to false to disable loader
@@ -364,7 +344,7 @@
         <script type="text/javascript">
                 $.toast({
                     heading: 'Success',
-                    text: "Berhasil tambah data barang reseller",
+                    text: "Data berhasil disimpan",
                     showHideTransition: 'slide',
                     icon: 'info',
                     loader: true,        // Change it to false to disable loader
@@ -416,7 +396,7 @@
         <script type="text/javascript">
                 $.toast({
                     heading: 'Delete',
-                    text: "Barang berhasil didelete",
+                    text: "Data berhasil didelete",
                     showHideTransition: 'slide',
                     icon: 'info',
                     loader: true,        // Change it to false to disable loader

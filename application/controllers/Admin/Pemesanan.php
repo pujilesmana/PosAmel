@@ -19,15 +19,16 @@
 		    $this->load->library('upload');
 	  	}
 
-	  	function index(){
+	  	function home($level){
 	  		if($this->session->userdata('akses') == 2 && $this->session->userdata('masuk') == true){
+	  		   $x['level1'] = $level;
 		       $y['title'] = "Pemesanan";
 		       $x['asal_transaksi'] = $this->m_pemesanan->getAllAT();
 		       $x['kurir'] = $this->m_pemesanan->getAllkurir();
 		       $x['metode_pembayaran'] = $this->m_pemesanan->getAllMetpem();
 		       $x['nonreseller'] = $this->m_barang->getDataNonReseller1();
 		       $x['reseller'] = $this->m_barang->getAllBarangR();
-		       $x['datapesanan'] = $this->m_pemesanan->getPemesananCurdate();
+		       $x['datapesanan'] = $this->m_pemesanan->getPemesananCurdate1($level);
 		       $this->load->view('v_header',$y);
 		       $this->load->view('admin/v_sidebar');
 		       $this->load->view('admin/v_pemesanan',$x);
@@ -61,7 +62,7 @@
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect('Admin/Pemesanan');		  	
+	       	redirect('Admin/Pemesanan/Home/1');		  	
  	  	}
 
  	  	function tambahpesananNR(){
@@ -110,7 +111,7 @@
 	  		$pemesanan_id = $this->input->post('pemesanan_id');
 	  		$this->m_pemesanan->hapus_pesanan($pemesanan_id);
 	  		echo $this->session->set_flashdata('msg','hapus');
-	       	redirect('Admin/Pemesanan');	
+	       	redirect($this->agent->referrer());	
 	  	}
 
  	  	function savepemesananR(){

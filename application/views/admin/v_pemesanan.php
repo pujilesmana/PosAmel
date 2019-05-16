@@ -18,21 +18,30 @@
         <div class="card card-statistics h-100"> 
           <div class="card-body">
             <div class="col-xl-12 mb-10" style="display: flex">
+              <?php if($level1 == 2) :?>
               <div class="col-md-4">
                 <a href="" data-toggle="modal" data-target="#tambah-pesanan-non-reseller" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Customer
                 </a>
               </div>
               <div class="col-md-4">
+                <a href="<?= base_url()?>Owner/Transaksi/cetak_transaksi1/2" target="blank" class="btn btn-success btn-block ripple m-t-20">
+                  <i class="fa fa-print pr-2"></i> Cetak
+                </a>
+              </div>
+              <?php elseif($level1 == 1) :?>
+              <div class="col-md-4">
                 <a href="" data-toggle="modal" data-target="#reseller" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Reseller
                 </a>
               </div>
               <div class="col-md-4">
-                <a href="<?= base_url()?>Owner/Transaksi/cetak_transaksi" target="blank" class="btn btn-success btn-block ripple m-t-20">
+                <a href="<?= base_url()?>Owner/Transaksi/cetak_transaksi1/1" target="blank" class="btn btn-success btn-block ripple m-t-20">
                   <i class="fa fa-print pr-2"></i> Cetak
                 </a>
               </div>
+            <?php endif;?>
+              
             </div>
             <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered p-0">

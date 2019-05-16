@@ -15,10 +15,22 @@
         	return $hasil;
 		}
 
+		function getPemesanan1($level){
+			$hasil=$this->db->query("SELECT a.*,b.*,c.*,d.*,DATE_FORMAT(pemesanan_tanggal,'%d/%m/%Y') AS tanggal FROM pemesanan a, kurir b, asal_transaksi c, metode_pembayaran d WHERE a.level = '$level' AND a.kurir_id = b.kurir_id AND a.at_id = c.at_id AND a.mp_id = d.mp_id  ORDER BY a.pemesanan_id DESC");
+        	return $hasil;
+		}
+
 		function getPemesananCurdate(){
 			date_default_timezone_set("Asia/Jakarta");
         	$cur_date = date("Y-m-d");
 			$hasil=$this->db->query("SELECT a.*,b.*,c.*,d.*,DATE_FORMAT(pemesanan_tanggal,'%d/%m/%Y') AS tanggal FROM pemesanan a, kurir b, asal_transaksi c, metode_pembayaran d WHERE pemesanan_tanggal = '$cur_date' AND a.kurir_id = b.kurir_id AND a.at_id = c.at_id AND a.mp_id = d.mp_id ORDER BY a.pemesanan_id DESC");
+        	return $hasil;
+		}
+
+		function getPemesananCurdate1($level){
+			date_default_timezone_set("Asia/Jakarta");
+        	$cur_date = date("Y-m-d");
+			$hasil=$this->db->query("SELECT a.*,b.*,c.*,d.*,DATE_FORMAT(pemesanan_tanggal,'%d/%m/%Y') AS tanggal FROM pemesanan a, kurir b, asal_transaksi c, metode_pembayaran d WHERE a.pemesanan_tanggal = '$cur_date' AND a.level = '$level' AND a.kurir_id = b.kurir_id AND a.at_id = c.at_id AND a.mp_id = d.mp_id ORDER BY a.pemesanan_id DESC");
         	return $hasil;
 		}
 

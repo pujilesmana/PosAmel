@@ -22,8 +22,19 @@
           <a href="<?php echo base_url()?>Owner/Transaksi"><i class="ti-calendar"></i><span class="right-nav-text">Transaksi</span> </a>
         </li>
         <li>
-          <a href="<?php echo base_url()?>Owner/Barang/pemesanan"><i class="ti-world"></i><span class="right-nav-text">Pemesanan</span> </a>
+          <a href="<?php echo base_url()?>Owner/Diskon"><i class="ti-calendar"></i><span class="right-nav-text">Diskon</span> </a>
         </li>
+        <li>
+          <a href="javascript:void(0);" data-toggle="collapse" data-target="#1">
+            <div class="pull-left"><i class="ti-files"></i><span class="right-nav-text">Ordering</span></div>
+            <div class="pull-right"><i class="ti-plus"></i></div><div class="clearfix"></div>
+          </a>
+          <ul id="1" class="collapse" data-parent="#sidebarnav">
+            <li><a href="<?php echo base_url()?>Owner/Barang/Pemesanan/2">Ordering Customer</a></li>
+            <li> <a href="<?php echo base_url()?>Owner/Barang/Pemesanan/1">Ordering Reseller</a></li>
+          </ul>
+        </li>
+        <li>
         <li>
           <a href="<?php echo base_url()?>Owner/User"><i class="ti-user"></i><span class="right-nav-text">User</span> </a>
         </li>
