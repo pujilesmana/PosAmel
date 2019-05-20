@@ -138,7 +138,7 @@
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect('Admin/Pemesanan');	  	
+	       	redirect($this->agent->referrer());	  	
  	  	}
 
  	  	function edit_pesanan(){
@@ -153,7 +153,7 @@
 
 	  		$this->m_pemesanan->edit_pesanan($pemesanan_id,$nama_pemesan,$no_hp,$alamat,$kurir,$asal_transaksi,$metode_pembayaran);
 	  		echo $this->session->set_flashdata('msg','update');
-	       	redirect('Admin/Pemesanan');	
+	       	redirect($this->agent->referrer());	
 	  	}
 
  	  	function list_barang($pemesanan_id){

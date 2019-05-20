@@ -113,6 +113,18 @@
                                     <label class="control-label">Harga Normal</label>
                                     <input class="form-control form-white money"  type="text" name="harga_normal" required="" />
                                 </div>
+                                 <div class="col-md-12">
+                                  <label class="control-label">Kategori</label>
+                                  <select class="form-control" name="kategori" required>
+                                    <?php
+                                      foreach($kategori->result_array() as $i) :
+                                        $kategori_id = $i['kategori_id'];
+                                        $kategori_nama = $i['kategori_nama'];
+                                    ?>
+                                    <option value="<?php echo $kategori_id?>"><?php echo $kategori_nama?></option>
+                                    <?php endforeach;?>
+                                  </select>
+                                 </div>
                                 <div class="col-md-12">
                                     <label class="control-label">Foto Barang</label>
                                     <input class="form-control form-white" type="file" name="filefoto" />
@@ -140,6 +152,8 @@
                     $tanggal = $i['tanggal'];
                     $bnr_id = $i['bnr_id'];
                     $harga_normal = $i['bnr_harga'];
+                    $kategori_id1 = $i['kategori_id'];
+                    $kategori_nama = $i['kategori_nama'];
                   ?>
         <!-- Modal edit Data -->
           <div class="modal" tabindex="-1" role="dialog" id="editdata<?php echo $barang_id?>">
@@ -175,6 +189,22 @@
                                     <label class="control-label">Harga Normal</label>
                                     <input class="form-control form-white money"  type="text" name="harga_normal" value="<?php echo $harga_normal?>" required/>
                                 </div>
+                                 <div class="col-md-12">
+                                  <label class="control-label">Kategori</label>
+                                  <select class="form-control" name="kategori" required>
+                                    <?php
+                                      foreach($kategori->result_array() as $i) :
+                                        $kategori_id = $i['kategori_id'];
+                                        $kategori_nama = $i['kategori_nama'];
+                                    
+                                    if($kategori_id1 == $kategori_id){
+                                          echo "<option selected value='$kategori_id'>$kategori_nama</option>";
+                                        }else{
+                                          echo "<option value='$kategori_id'>$kategori_nama</option>";
+                                        }
+                                     endforeach;?>
+                                  </select>
+                                 </div>
                                 <div class="col-md-12">
                                     <label class="control-label">Foto Barang</label>
                                     <input class="form-control form-white" type="file" name="filefoto" />

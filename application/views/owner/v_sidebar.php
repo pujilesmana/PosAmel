@@ -14,6 +14,7 @@
             <div class="pull-right"><i class="ti-plus"></i></div><div class="clearfix"></div>
           </a>
           <ul id="Barang" class="collapse" data-parent="#sidebarnav">
+            <li> <a href="<?php echo base_url()?>Owner/Barang/Kategori">Kategori Barang</a> </li>
             <li> <a href="<?php echo base_url()?>Owner/Barang">Barang Customer</a> </li>
             <li> <a href="<?php echo base_url()?>Owner/Barang/Reseller">Barang Reseller</a> </li>
           </ul>
