@@ -78,6 +78,7 @@
                     <tr>
                       <th colspan="4"><center>Jumlah</center></th>
                       <th><?php echo rupiah($jumlah)?></th>
+                      <!-- <th></th> -->
                     </tr>
               </tbody>
            </table>
@@ -85,6 +86,7 @@
           </div>
         </div>   
       </div>
+
 
        <!-- Modal Add Barang Reseller-->
         <div class="modal" tabindex="-1" role="dialog" id="kurir">

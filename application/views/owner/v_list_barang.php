@@ -6,7 +6,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-              <li class="breadcrumb-item"><a href="<?php echo base_url()?>Admin/Pemesanan" class="default-color">Home</a></li>
+              <li class="breadcrumb-item"><a href="<?php echo base_url()?>Owner/Barang/pemesanan" class="default-color">Home</a></li>
               <li class="breadcrumb-item active">List Barang</li>
             </ol>
           </div>
@@ -19,11 +19,11 @@
           <div class="card-body">
             <div class="col-xl-12 mb-10" style="display: flex;">
               <div class="col-xl-12 mb-10" style="display: flex">
-                <!-- <div class="col-md-6">
+                <div class="col-md-6">
                   <a href="" data-toggle="modal" data-target="#kurir" class="btn btn-primary btn-block ripple m-t-20">
                     <i class="fa fa-plus pr-2"></i> Tambah List Barang
                   </a>
-                </div> -->
+                </div>
                 <div class="col-md-6">
                   <a href="<?php echo base_url()?>Admin/Pemesanan/Cetak_Invoice/<?php echo $p_id?>/<?php echo $lvl?>" target="blank" class="btn btn-primary btn-block ripple m-t-20">
                     <i class="fa fa-print pr-2"></i> Cetak Invoice
@@ -87,7 +87,6 @@
         </div>   
       </div>
 
-
        <!-- Modal Add Barang Reseller-->
         <div class="modal" tabindex="-1" role="dialog" id="kurir">
             <div class="modal-dialog modal-lg">
@@ -101,7 +100,7 @@
                             <div class="row">
                                 <div class="form-group col-md-12 mt-10" id="dynamic_field">
                                         <div class="row"> 
-                                          <input type="hidden" name="pemesanan_id" value="<?php echo $p_id?>">
+                                          <input type="hidden" name="pemesanan_id" value="<?php echo $pemesanan_id?>">
                                           <div class="col-md-8">
                                             <label class="control-label">Barang</label>
                                             <select class="form-control" name="barang[]" required>
@@ -157,7 +156,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body p-20">
-                        <form action="<?php echo base_url()?>Owner/Barang/hapuspesananlb" method="post">
+                        <form action="<?php echo base_url()?>Admin/Pemesanan/hapuspesananlb" method="post">
                             <div class="row">
                                 <div class="col-md-12">
                                     <input type="hidden" name="pemesanan_id" value="<?php echo $pemesanan_id?>"/>

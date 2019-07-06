@@ -22,6 +22,7 @@
               <thead>
                   <tr>
                       <th width="10">No</th>
+                      <th>Nama Pemesan</th>
                       <th>Nama Barang</th>
                       <th><center>Stock Berkurang</center></th>
                       <th><center>Tanggal</center></th>
@@ -36,9 +37,11 @@
                     $barang_nama = $i['barang_nama'];
                     $stock_berkurang = $i['stock_berkurang'];
                     $tanggal = $i['tanggal'];
+                    $nama_pemesan = $i['pemesanan_nama'];
                   ?>
                   <tr>
                       <td><center><?php echo $no?></center></td>
+                      <td><?php echo $nama_pemesan?></td>
                       <td><?php echo $barang_nama?></td>
                       <td><center><?php echo $stock_berkurang?></center></td>
                       <td><center><?php echo $tanggal?></center></td>

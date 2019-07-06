@@ -19,19 +19,20 @@
           <div class="card-body">
             <div class="col-xl-12 mb-10" style="display: flex">
               <?php if($level1 == 2) :?>
-              <div class="col-md-12">
+                
+
                 <a href="" data-toggle="modal" data-target="#tambah-pesanan-non-reseller" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Customer
                 </a>
-              </div>
+              
               <?php elseif($level1 == 1) :?>
-              <div class="col-md-12">
+             
                 <a href="" data-toggle="modal" data-target="#reseller" class="btn btn-primary btn-block ripple m-t-20">
                   <i class="fa fa-plus pr-2"></i> Tambah Pemesanan Reseller
                 </a>
-              </div>
-              <?php endif;?>
               
+            <?php endif;?>
+            
             </div>
             <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered p-0">
@@ -330,9 +331,9 @@
             $level = $i['level'];
             $kurir_nama = $i['kurir_nama'];
             $at_id1 = $i['at_id'];
-            $at_nama = $i['at_nama'];
             $mp_id1 = $i['mp_id'];
-                      $mp_nama = $i['mp_nama'];
+            $mp_nama = $i['mp_nama'];
+            $at_nama = $i['at_nama'];
         ?>
         <!-- Modal edit Data -->
           <div class="modal" tabindex="-1" role="dialog" id="editdata<?php echo $pemesanan_id?>">
@@ -342,12 +343,12 @@
                         <h5 class="modal-title">Edit Data</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Owner/Barang/edit_pesanan" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Owner/Barang/edit_pesanan_barang/<?= $pemesanan_id?>" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="col-md-12">
                                     <label class="control-label">Nama Pemesan</label>
-                                    <input type="hidden" name="pemesanan_id" value="<?php echo $pemesanan_id?>">
+
                                     <input class="form-control form-white" type="text" name="nama_pemesan" value="<?php echo $pemesanan_nama?>" required/>
                                 </div>
                                 <div class="col-md-12">
@@ -399,7 +400,7 @@
                                     ?>
                                   </select>
                                  </div>
-                                 <div class="col-md-12">
+                                  <div class="col-md-12">
                                   <label class="control-label">Metode Pembayaran</label>
                                   <select class="form-control" name="mp" required>
                                     <option selected value="">Pilih</option>

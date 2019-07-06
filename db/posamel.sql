@@ -19,8 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `sistemposamel`
 --
--- CREATE DATABASE IF NOT EXISTS `sistemposamel` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
--- USE `sistemposamel`;
+CREATE DATABASE IF NOT EXISTS `sistemposamel` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `sistemposamel`;
 
 -- --------------------------------------------------------
 

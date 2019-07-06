@@ -21,14 +21,38 @@
 
 	  	function home($level){
 	  		if($this->session->userdata('akses') == 2 && $this->session->userdata('masuk') == true){
-	  		   $x['level1'] = $level;
 		       $y['title'] = "Pemesanan";
+		       $x['level1'] = $level;
 		       $x['asal_transaksi'] = $this->m_pemesanan->getAllAT();
 		       $x['kurir'] = $this->m_pemesanan->getAllkurir();
 		       $x['metode_pembayaran'] = $this->m_pemesanan->getAllMetpem();
 		       $x['nonreseller'] = $this->m_barang->getDataNonReseller1();
 		       $x['reseller'] = $this->m_barang->getAllBarangR();
 		       $x['datapesanan'] = $this->m_pemesanan->getPemesananCurdate1($level);
+		       $a = $this->m_pemesanan->getPemesananCurdate1($level);
+		       $total_o = 0;
+		       foreach ($a->result_array() as $i) {
+		       	$pemesanan_id = $i['pemesanan_id'];
+		       	$level = $i['level'];
+		       	if($level == 1){
+		       		$t = $this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_omset, (SUM(a.lb_qty * d.br_harga))-(SUM(a.lb_qty * c.barang_harga_modal)) AS total_untung FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+              		$d=$t->row_array();
+               		$total_omset = $d['total_omset'];
+		       	}elseif($level == 2){
+		       		$t = $this->db->query("SELECT SUM(a.lb_qty * d.bnr_harga) AS total_omset, (SUM(a.lb_qty * d.bnr_harga))-(SUM(a.lb_qty * c.barang_harga_modal)) AS total_untung FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+              		$d=$t->row_array();
+               		$total_untung = $d['total_untung'];
+               		$total_omset = $d['total_omset'];
+		       	}
+
+		       		$total_o = $total_o + $total_omset;
+		       }
+		       
+              
+               $total_om = $total_o;
+               $x['total_omset'] = $total_om;
+		       $a = $this->m_pemesanan->SUMNR()->row_array();
+ 	  		   $x['jumlah_nr'] = $a['total_keseluruhan'];
 		       $this->load->view('v_header',$y);
 		       $this->load->view('admin/v_sidebar');
 		       $this->load->view('admin/v_pemesanan',$x);
@@ -44,8 +68,8 @@
 	  		$alamat = $this->input->post('alamat');
 	  		$asal_transaksi = $this->input->post('at');
 	  		$kurir = $this->input->post('kurir');
-	  		$metpem = $this->input->post('metpem');
 	  		$tanggal = $this->input->post('tanggal');
+	  		$metpem = $this->input->post('metpem');
 	  		$level = 2;
 	  		$barang_id = $this->input->post('barang');
 	  		$qty = $this->input->post('qty');
@@ -62,7 +86,7 @@
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect('Admin/Pemesanan/Home/1');		  	
+	       	redirect($this->agent->referrer());		  	
  	  	}
 
  	  	function tambahpesananNR(){
@@ -107,13 +131,6 @@
 	       	redirect($this->agent->referrer());
 	  	}
 
-	  	function hapus_pesanan(){
-	  		$pemesanan_id = $this->input->post('pemesanan_id');
-	  		$this->m_pemesanan->hapus_pesanan($pemesanan_id);
-	  		echo $this->session->set_flashdata('msg','hapus');
-	       	redirect($this->agent->referrer());	
-	  	}
-
  	  	function savepemesananR(){
 	  		$nama_pemesan = $this->input->post('nama_pemesan');
 	  		$no_hp = $this->input->post('hp');
@@ -155,6 +172,15 @@
 	  		echo $this->session->set_flashdata('msg','update');
 	       	redirect($this->agent->referrer());	
 	  	}
+
+	  	function hapus_pesanan(){
+	  		$pemesanan_id = $this->input->post('pemesanan_id');
+	  		$this->m_pemesanan->hapus_pesanan($pemesanan_id);
+	  		echo $this->session->set_flashdata('msg','hapus');
+	       	redirect($this->agent->referrer());	
+	  	}
+
+
 
  	  	function list_barang($pemesanan_id){
  	  		if($this->session->userdata('akses') == 2 && $this->session->userdata('masuk') == true){
@@ -199,6 +225,7 @@
 	 	  		   $x['pemesan'] = $this->m_pemesanan->getIdbyid($pemesanan_id);
 	 	  		    $a = $this->m_pemesanan->getIdbyid($pemesanan_id)->row_array();
  	  		   	   $x['kurir'] = $a['kurir_nama'];
+ 	  		   	   $x['at'] = $a['at_nama'];
  	  		   	   $x['mp_nama'] = $a['mp_nama'];
  	  		  	   $x['nama'] = $this->session->userdata('nama');
 			       $this->load->view('admin/v_cetak_invoice',$x);
@@ -210,6 +237,7 @@
  	  		   	   $x['pemesan'] = $this->m_pemesanan->getIdbyid($pemesanan_id);
  	  		   	   $a = $this->m_pemesanan->getIdbyid($pemesanan_id)->row_array();
  	  		   	   $x['kurir'] = $a['kurir_nama'];
+ 	  		   	   $x['at'] = $a['at_nama'];
  	  		   	   $x['mp_nama'] = $a['mp_nama'];
  	  		   	   $x['nama'] = $this->session->userdata('nama');
 			       $this->load->view('admin/v_cetak_invoice',$x);

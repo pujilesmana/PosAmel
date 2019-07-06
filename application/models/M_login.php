@@ -9,7 +9,7 @@ class M_login extends CI_Model
     function getuser($id){
         $hasil=$this->db->query("SELECT * FROM user WHERE user_id='$id' ");
         return $hasil;
-    }
+    } 
 
     function getAlluser(){
         $hasil=$this->db->query("SELECT * FROM user");
@@ -34,5 +34,5 @@ class M_login extends CI_Model
     function hapusUser($id){
             $hsl = $this->db->query("DELETE FROM user WHERE user_id='$id'");
             return $hsl;
-        } 
+        }  
 }?>

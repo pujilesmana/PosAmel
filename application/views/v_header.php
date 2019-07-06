@@ -28,11 +28,11 @@
 
 <!--=================================
  header start-->
-     <?php
-              $id=$this->session->userdata('id');
-              $q=$this->db->query("SELECT * FROM user WHERE user_id='$id'");
-              $c=$q->row_array();
-    ?>
+<?php
+  $id=$this->session->userdata('id');
+  $q=$this->db->query("SELECT * FROM user WHERE user_id='$id'");
+  $c=$q->row_array();
+?>
 <nav class="admin-header navbar navbar-default col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <!-- logo -->
   <div class="text-left navbar-brand-wrapper">
@@ -47,7 +47,11 @@
   <!-- top bar right -->
   
   <ul class="nav navbar-nav ml-auto">
-
+    <?php
+              $id=$this->session->userdata('id');
+              $q=$this->db->query("SELECT * FROM user WHERE user_id='$id'");
+              $c=$q->row_array();
+    ?>
     <li class="nav-item dropdown mr-30">
       <a class="nav-link nav-pill user-avatar" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
         <img src="<?php echo base_url().'assets/admin/images/'.$c['user_foto'];?>" alt="avatar">

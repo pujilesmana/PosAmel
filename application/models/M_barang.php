@@ -5,18 +5,18 @@
 	class M_barang extends CI_Model
 	{
 		
-		function savebarang($nama_barang, $barang_stock_awal, $barang_stock_akhir, $barang_harga_modal, $barang_level, $barang_foto,$kategori_id){
-			$hsl = $this->db->query("INSERT INTO barang(barang_nama,barang_stock_awal,barang_stock_akhir,barang_harga_modal,barang_level,barang_foto,kategori_id) VALUES ('$nama_barang','$barang_stock_awal','$barang_stock_akhir','$barang_harga_modal','$barang_level','$barang_foto','$kategori_id')");
+		function savebarang($nama_barang, $barang_stock_awal, $barang_stock_akhir, $barang_harga_modal, $barang_level, $barang_foto){
+			$hsl = $this->db->query("INSERT INTO barang(barang_nama,barang_stock_awal,barang_stock_akhir,barang_harga_modal,barang_level,barang_foto) VALUES ('$nama_barang','$barang_stock_awal','$barang_stock_akhir','$barang_harga_modal','$barang_level','$barang_foto')");
         	return $hsl;
 		}
 
-		function update_barangImage($barang_id,$nama_barang, $stock=0, $barang_harga_modal, $barang_foto, $kategori_id){
-			$hsl = $this->db->query("UPDATE barang SET barang_nama='$nama_barang', barang_stock_awal=barang_stock_awal + '$stock',barang_stock_akhir=barang_stock_akhir + '$stock',barang_harga_modal='$barang_harga_modal',barang_foto='$barang_foto', kategori_id='$kategori_id' WHERE barang_id='$barang_id'");
+		function update_barangImage($barang_id,$nama_barang, $stock=0, $barang_harga_modal, $barang_foto){
+			$hsl = $this->db->query("UPDATE barang SET barang_nama='$nama_barang', barang_stock_awal=barang_stock_awal + '$stock',barang_stock_akhir=barang_stock_akhir + '$stock',barang_harga_modal='$barang_harga_modal',barang_foto='$barang_foto' WHERE barang_id='$barang_id'");
      		return $hsl;
 		}
 
-		function update_barang_noImage($barang_id,$nama_barang, $stock=0, $barang_harga_modal, $kategori_id){
-			$hsl = $this->db->query("UPDATE barang SET barang_nama='$nama_barang', barang_stock_awal=barang_stock_awal + '$stock',barang_stock_akhir=barang_stock_akhir + '$stock',barang_harga_modal='$barang_harga_modal', kategori_id='$kategori_id' WHERE barang_id='$barang_id'");
+		function update_barang_noImage($barang_id,$nama_barang, $stock=0, $barang_harga_modal){
+			$hsl = $this->db->query("UPDATE barang SET barang_nama='$nama_barang', barang_stock_awal=barang_stock_awal + '$stock',barang_stock_akhir=barang_stock_akhir + '$stock',barang_harga_modal='$barang_harga_modal' WHERE barang_id='$barang_id'");
      		return $hsl;
 		}
 
@@ -81,23 +81,34 @@
         	return $hasil;
 		}
 		function getAllBarangR(){
-			$hasil=$this->db->query("SELECT barang.*,DATE_FORMAT(barang_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM barang WHERE barang_stock_akhir > 0 ORDER BY barang_nama");
+			$hasil=$this->db->query("SELECT barang.*,DATE_FORMAT(barang_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM barang ORDER BY barang_nama");
         	return $hasil;
 		}
 
 		function getDataReseller(){
-			$hasil=$this->db->query("SELECT a.*,DATE_FORMAT(barang_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM barang a WHERE a.barang_stock_akhir > 0 AND barang_level = 1");
+			$hasil=$this->db->query("SELECT a.*,DATE_FORMAT(barang_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM barang a WHERE barang_level = 1");
         	return $hasil;
 		}
 
 		function getDataNonReseller1(){
-			$hasil=$this->db->query("SELECT a.*,DATE_FORMAT(barang_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM barang a WHERE a.barang_stock_akhir > 0 AND barang_level = 2");
+			$hasil=$this->db->query("SELECT a.*,DATE_FORMAT(barang_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM barang a WHERE barang_level = 2");
         	return $hasil;
 		}
 
 		function getDataNonReseller(){
-			$hasil=$this->db->query("SELECT a.*,b.*,c.*,DATE_FORMAT(barang_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM barang a, barang_non_reseller b,kategori_barang c WHERE a.barang_id = b.barang_id AND a.kategori_id = c.kategori_id");
+			$hasil=$this->db->query("SELECT a.*,b.*,DATE_FORMAT(barang_tanggal,'%d/%m/%Y %H:%i') AS tanggal FROM barang a, barang_non_reseller b WHERE a.barang_id = b.barang_id");
         	return $hasil;
+		}
+
+		function getTotalomsetBarang(){ 
+			$hasil=$this->db->query('SELECT sum(a.barang_stock_akhir * b.bnr_harga) as total_omset FROM barang a, barang_non_reseller b WHERE a.barang_id = b.barang_id')->result_array();
+        	return $hasil[0]['total_omset'];
+		}
+
+		function getTotalUntung(){
+			$hasil=$this->db->query('SELECT (sum(a.barang_stock_akhir * b.bnr_harga)-sum(a.barang_stock_akhir * a.barang_harga_modal) ) as total_untung  FROM barang a, barang_non_reseller b WHERE a.barang_id = b.barang_id')->result_array();
+        	
+        	return $hasil[0]['total_untung'];
 		}
 
 		function getHistoryStock($barang_id){
@@ -167,26 +178,6 @@
 	        else
 	        return false;
 		}
-
-		function getAllkategori(){
-			$hasil=$this->db->query("SELECT * FROM kategori_barang");
-        	return $hasil;
-		}
-
-		function save_kategori($nama){
-			$hsl = $this->db->query("INSERT INTO kategori_barang(kategori_nama) VALUES ('$nama')");
-        	return $hsl;
-		}
-
-		function update_kategori($id,$nama){
-			$hsl = $this->db->query("UPDATE kategori_barang SET kategori_nama='$nama' WHERE kategori_id='$id'");
-        	return $hsl;
-		}
-
-		function hapus_kategori($id){
-	      	$hsl = $this->db->query("DELETE FROM kategori_barang WHERE kategori_id='$id'");
-	      	return $hsl;
-    	}
 
 	}
 ?>

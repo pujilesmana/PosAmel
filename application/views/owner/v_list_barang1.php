@@ -6,7 +6,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-              <li class="breadcrumb-item"><a href="<?php echo base_url()?>Admin/Pemesanan" class="default-color">Home</a></li>
+              <li class="breadcrumb-item"><a href="<?php echo base_url()?>Owner/Barang/pemesanan" class="default-color">Home</a></li>
               <li class="breadcrumb-item active">List Barang</li>
             </ol>
           </div>
@@ -17,11 +17,18 @@
       <div class="col-xl-12 mb-30">     
         <div class="card card-statistics h-100"> 
           <div class="card-body">
-            <div class="col-xl-12 mb-10">
-              <!-- <a href="" data-toggle="modal" data-target="#kurir" class="btn btn-primary btn-block ripple m-t-20">
-                  <i class="fa fa-plus pr-2"></i> Tambah List Barang
-              </a> -->
-            </div>
+             <div class="col-xl-12 mb-10" style="display: flex">
+                <div class="col-md-6">
+                  <a href="" data-toggle="modal" data-target="#kurir" class="btn btn-primary btn-block ripple m-t-20">
+                    <i class="fa fa-plus pr-2"></i> Tambah List Barang
+                  </a>
+                </div>
+                <div class="col-md-6">
+                  <a href="<?php echo base_url()?>Admin/Pemesanan/Cetak_Invoice/<?php echo $p_id?>/<?php echo $lvl?>" target="blank" class="btn btn-primary btn-block ripple m-t-20">
+                    <i class="fa fa-print pr-2"></i> Cetak Invoice
+                  </a>
+                </div>
+              </div>
             <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered p-0">
               <thead>
@@ -53,6 +60,7 @@
                       $barang_nama = $i['barang_nama'];
                       $br_harga = $i['br_harga'];
                       $total = $i['total'];
+
                   ?>
                     <tr>
                      <td><center><?php echo $no?></center></td>
@@ -84,12 +92,13 @@
                         <h5 class="modal-title">Tambah Kurir</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Owner/Barang/tambahpesananR" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Admin/Pemesanan/tambahpesananR" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="form-group col-md-12 mt-10" id="dynamic_field1">
                                         <div class="row"> 
                                           <div class="col-md-8">
+                                            <input type="hidden" name="pemesanan_id" value="<?php echo $p_id?>">
                                             <label class="control-label">Barang</label>
                                             <select class="form-control" name="barang[]" required>
                                                 <option selected value="">Pilih</option>
@@ -132,7 +141,7 @@
                       $barang_id = $i['barang_id'];
                       $qty = $i['lb_qty'];
                       $barang_nama = $i['barang_nama'];
-                      $bnr_harga = $i['bnr_harga'];
+                      $br_harga = $i['br_harga'];
                       $total = $i['total'];
                   ?>
         <div class="modal" tabindex="-1" role="dialog" id="hapusdata<?php echo $lb_id?>">
@@ -143,7 +152,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body p-20">
-                        <form action="<?php echo base_url()?>Owner/Barang/hapuspesananlb" method="post">
+                        <form action="<?php echo base_url()?>Admin/Pemesanan/hapuspesananlb" method="post">
                             <div class="row">
                                 <div class="col-md-12">
                                     <input type="hidden" name="pemesanan_id" value="<?php echo $pemesanan_id?>"/>

@@ -15,8 +15,8 @@
         	return $hasil;
 		}
 
-		function getPemesanan1($level){
-			$hasil=$this->db->query("SELECT a.*,b.*,c.*,d.*,DATE_FORMAT(pemesanan_tanggal,'%d/%m/%Y') AS tanggal FROM pemesanan a, kurir b, asal_transaksi c, metode_pembayaran d WHERE a.level = '$level' AND a.kurir_id = b.kurir_id AND a.at_id = c.at_id AND a.mp_id = d.mp_id  ORDER BY a.pemesanan_id DESC");
+		function getPemesananlevel($level){
+			$hasil=$this->db->query("SELECT a.*,b.*,c.*,d.*,DATE_FORMAT(pemesanan_tanggal,'%d/%m/%Y') AS tanggal FROM pemesanan a, kurir b, asal_transaksi c, metode_pembayaran d WHERE a.kurir_id = b.kurir_id AND a.at_id = c.at_id AND a.mp_id = d.mp_id AND a.level = '$level'  ORDER BY a.pemesanan_id DESC");
         	return $hasil;
 		}
 
@@ -39,13 +39,19 @@
         	return $hasil;
 		}
 
+		function getPemesananMonth_filter($dari,$ke,$level){
+			$hasil=$this->db->query("SELECT a.*,b.*,c.*,DATE_FORMAT(pemesanan_tanggal,'%d/%m/%Y') AS tanggal FROM pemesanan a, kurir b, asal_transaksi c WHERE (a.pemesanan_tanggal BETWEEN '$dari' AND '$ke') AND a.kurir_id = b.kurir_id AND a.at_id = c.at_id AND a.level = '$level' ORDER BY a.pemesanan_id DESC");
+        	return $hasil;
+		}
+
+
 		function getIdbyName($nama_pemesan){
 			$hasil=$this->db->query("SELECT * FROM pemesanan WHERE pemesanan_nama='$nama_pemesan' ORDER BY pemesanan_id DESC LIMIT 1");
         	return $hasil;
 		}
 
 		function getIdbyid($pemesanan_id){
-			$hasil=$this->db->query("SELECT a.*,b.*,c.*,d.*,DATE_FORMAT(pemesanan_tanggal,'%d/%m/%Y') AS tanggal FROM pemesanan a, kurir b, asal_transaksi c,  metode_pembayaran d WHERE pemesanan_id='$pemesanan_id' AND  a.kurir_id = b.kurir_id AND a.at_id = c.at_id AND a.mp_id = d.mp_id LIMIT 1");
+			$hasil=$this->db->query("SELECT a.*,b.*,c.*,d.*,DATE_FORMAT(pemesanan_tanggal,'%d/%m/%Y') AS tanggal FROM pemesanan a, kurir b, asal_transaksi c, metode_pembayaran d WHERE pemesanan_id='$pemesanan_id' AND  a.kurir_id = b.kurir_id AND a.at_id = c.at_id AND a.mp_id = d.mp_id LIMIT 1");
         	return $hasil;
 		}
 
@@ -96,26 +102,6 @@
 	      	return $hsl;
     	}
 
-    	function getAllMetpem(){
-			$hasil=$this->db->query("SELECT * FROM metode_pembayaran");
-        	return $hasil;
-		}
-
-		function save_Metpem($nama){
-			$hsl = $this->db->query("INSERT INTO metode_pembayaran(mp_nama) VALUES ('$nama')");
-        	return $hsl;
-		}
-
-		function update_Metpem($id,$nama){
-			$hsl = $this->db->query("UPDATE metode_pembayaran SET mp_nama='$nama' WHERE mp_id='$id'");
-        	return $hsl;
-		}
-
-		function hapus_Metpem($id){
-	      	$hsl = $this->db->query("DELETE FROM metode_pembayaran WHERE mp_id='$id'");
-	      	return $hsl;
-    	}
-
     	function getAllkurir(){
 			$hasil=$this->db->query("SELECT * FROM kurir");
         	return $hasil;
@@ -136,11 +122,43 @@
 	      	return $hsl;
     	}
 
+    	function getAllMetpem(){
+			$hasil=$this->db->query("SELECT * FROM metode_pembayaran");
+        	return $hasil;
+		}
+
+		function save_Metpem($nama){
+			$hsl = $this->db->query("INSERT INTO metode_pembayaran(mp_nama) VALUES ('$nama')");
+        	return $hsl;
+		}
+
+		function update_Metpem($id,$nama){
+			$hsl = $this->db->query("UPDATE metode_pembayaran SET mp_nama='$nama' WHERE mp_id='$id'");
+        	return $hsl;
+		}
+
+		function hapus_Metpem($id){
+	      	$hsl = $this->db->query("DELETE FROM metode_pembayaran WHERE mp_id='$id'");
+	      	return $hsl;
+    	}
+
     	function SUMR(){
-    		return $this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE  a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+    		date_default_timezone_set("Asia/Jakarta");
+        	$cur_date = date("Y-m-d");
+    		return $this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE pemesanan_tanggal = '$cur_date' AND a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
     	}
 
     	function SUMNR(){
+    		date_default_timezone_set("Asia/Jakarta");
+        	$cur_date = date("Y-m-d");
+    		return $this->db->query("SELECT SUM(a.lb_qty * d.bnr_harga) AS total_keseluruhan FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE pemesanan_tanggal = '$cur_date' AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+    	}
+
+    	function SUMAR(){
+    		return $this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE  a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+    	}
+
+    	function SUMANR(){
     		return $this->db->query("SELECT SUM(a.lb_qty * d.bnr_harga) AS total_keseluruhan FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
     	}
 	}

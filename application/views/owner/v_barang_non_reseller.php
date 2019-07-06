@@ -18,9 +18,17 @@
         <div class="card card-statistics h-100"> 
           <div class="card-body">
             <div class="col-xl-12 mb-10" style="display: flex">
-              <a href="" data-toggle="modal" data-target="#tambah-barang-non-reseller" class="btn btn-primary btn-block ripple m-t-20">
+               <div class="col-md-3">
+               <a href="" data-toggle="modal" data-target="#tambah-barang-non-reseller" class="btn btn-primary btn-block ripple m-t-20">
                 <i class="fa fa-plus pr-2"></i> Tambah Barang Customer
-              </a>
+               </a>
+              </div>
+              <div class="col-md-3">
+                <p class="mt-10"><b>=> Total Omset : <?php echo rupiah($total_omset)?></b></p>
+              </div>
+              <div class="col-md-3">
+                <p class="mt-10"><b>=> Total Untung : <?php echo rupiah($total_untung)?></b></p>
+              </div>
             </div>
             <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered p-0">
@@ -32,7 +40,9 @@
                       <th>Stock Awal</th>
                       <th>Stock Akhir</th>
                       <th>Harga Modal</th>
-                      <th>Harga Customer</th> 
+                      <th>Total Modal</th>
+                      <th>Harga Customer</th>
+                      <th>Total Omset</th>
                       <th>Tanggal Input</th>
                       <th width="100"><center>Aksi</center></th>
                   </tr>
@@ -42,7 +52,7 @@
                   $no = 0;
 
                   function rupiah($angka){
-                    $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+                    $hasil_rupiah = number_format($angka,0,',','.');
                     return $hasil_rupiah;
                   }
 
@@ -66,7 +76,10 @@
                       <td><?php echo $barang_stock_awal?></td>
                       <td><?php echo $barang_stock_akhir?></td>
                       <td><?php echo rupiah($barang_harga_modal)?></td>
+                      <td><?php echo rupiah($barang_harga_modal * $barang_stock_akhir)?></td>
                       <td><?php echo rupiah($harga_normal)?></td>
+                      <td><?php echo rupiah($harga_normal * $barang_stock_akhir)?></td>
+
                       <td><?php echo $tanggal?></td>
                       <td>
                           <a href="#" style="margin-right: 10px; margin-left: 20px;" data-toggle="modal" data-target="#editdata<?php echo $barang_id?>"><span class="ti-pencil"></span></a>
@@ -113,18 +126,6 @@
                                     <label class="control-label">Harga Normal</label>
                                     <input class="form-control form-white money"  type="text" name="harga_normal" required="" />
                                 </div>
-                                 <div class="col-md-12">
-                                  <label class="control-label">Kategori</label>
-                                  <select class="form-control" name="kategori" required>
-                                    <?php
-                                      foreach($kategori->result_array() as $i) :
-                                        $kategori_id = $i['kategori_id'];
-                                        $kategori_nama = $i['kategori_nama'];
-                                    ?>
-                                    <option value="<?php echo $kategori_id?>"><?php echo $kategori_nama?></option>
-                                    <?php endforeach;?>
-                                  </select>
-                                 </div>
                                 <div class="col-md-12">
                                     <label class="control-label">Foto Barang</label>
                                     <input class="form-control form-white" type="file" name="filefoto" />
@@ -152,8 +153,6 @@
                     $tanggal = $i['tanggal'];
                     $bnr_id = $i['bnr_id'];
                     $harga_normal = $i['bnr_harga'];
-                    $kategori_id1 = $i['kategori_id'];
-                    $kategori_nama = $i['kategori_nama'];
                   ?>
         <!-- Modal edit Data -->
           <div class="modal" tabindex="-1" role="dialog" id="editdata<?php echo $barang_id?>">
@@ -189,22 +188,6 @@
                                     <label class="control-label">Harga Normal</label>
                                     <input class="form-control form-white money"  type="text" name="harga_normal" value="<?php echo $harga_normal?>" required/>
                                 </div>
-                                 <div class="col-md-12">
-                                  <label class="control-label">Kategori</label>
-                                  <select class="form-control" name="kategori" required>
-                                    <?php
-                                      foreach($kategori->result_array() as $i) :
-                                        $kategori_id = $i['kategori_id'];
-                                        $kategori_nama = $i['kategori_nama'];
-                                    
-                                    if($kategori_id1 == $kategori_id){
-                                          echo "<option selected value='$kategori_id'>$kategori_nama</option>";
-                                        }else{
-                                          echo "<option value='$kategori_id'>$kategori_nama</option>";
-                                        }
-                                     endforeach;?>
-                                  </select>
-                                 </div>
                                 <div class="col-md-12">
                                     <label class="control-label">Foto Barang</label>
                                     <input class="form-control form-white" type="file" name="filefoto" />

@@ -25,7 +25,7 @@
                 </a>
               </div>
               <div class="col-md-3">
-                <a href="" data-toggle="modal" data-target="#cetak_tanggal" target="blank" class="btn btn-primary btn-block ripple m-t-20">
+                <a href="" data-toggle="modal" data-target="#cetak_tanggal" target="blank" class="btn btn-success btn-block ripple m-t-20">
                   <i class="fa fa-print pr-2"></i> Cetak
                 </a>
               </div>
@@ -84,7 +84,11 @@
                         $c=$q->row_array();
                         $omset = $c['total_keseluruhan'];
                         $untung = $c['total'];
+
+
                       }
+
+                      
                   ?>
                     <tr>
                       <td><center><?php echo $no?></center></td>
@@ -110,7 +114,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Pilih Bulan</h5>
+                        <h5 class="modal-title">Pilih Tanggal</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <form action="<?php echo base_url()?>Owner/Transaksi/Cari" method="post" enctype="multipart/form-data">
@@ -135,7 +139,7 @@
             </div>
         </div>
 
-         <div class="modal" tabindex="-1" role="dialog" id="cetak_tanggal">
+        <div class="modal" tabindex="-1" role="dialog" id="cetak_tanggal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

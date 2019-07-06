@@ -23,7 +23,8 @@
 	  		if($this->session->userdata('akses') == 1 && $this->session->userdata('masuk') == true){
 		       $y['title'] = "Barang Customer";
 		       $x['nonreseller'] = $this->m_barang->getDataNonReseller();
-		       $x['kategori'] = $this->m_barang->getAllkategori();
+		       $x['total_omset']=$this->m_barang->getTotalomsetBarang();
+		        $x['total_untung']=$this->m_barang->getTotalUntung();
 		       $this->load->view('v_header',$y);
 		       $this->load->view('owner/v_sidebar');
 		       $this->load->view('owner/v_barang_non_reseller',$x);
@@ -36,13 +37,13 @@
 	  	function pemesanan($level){
 	  		if($this->session->userdata('akses') == 1 && $this->session->userdata('masuk') == true){
 		       $y['title'] = "Pemesanan";
-		       $x['level1'] = $level;
+		        $x['level1'] = $level;
 		       $x['asal_transaksi'] = $this->m_pemesanan->getAllAT();
 		       $x['kurir'] = $this->m_pemesanan->getAllkurir();
 		       $x['metode_pembayaran'] = $this->m_pemesanan->getAllMetpem();
 		       $x['nonreseller'] = $this->m_barang->getDataNonReseller1();
 		       $x['reseller'] = $this->m_barang->getAllBarangR();
-		       $x['datapesanan'] = $this->m_pemesanan->getPemesanan1($level);
+		       $x['datapesanan'] = $this->m_pemesanan->getPemesananlevel($level);
 		       $this->load->view('v_header',$y);
 		       $this->load->view('owner/v_sidebar');
 		       $this->load->view('owner/v_pemesanan_o',$x);
@@ -94,8 +95,6 @@
 	       	redirect("Owner/Barang/list_barang/$pemesanan_id/$level");		  	
  	  	}
 
-
-
 	  	function savepemesananNR(){
 	  		$nama_pemesan = $this->input->post('nama_pemesan');
 	  		$no_hp = $this->input->post('hp');
@@ -120,7 +119,7 @@
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect('Owner/Barang/pemesanan/2');		  	
+	       	redirect('Owner/Barang/pemesanan');		  	
  	  	}
 
  	  	function savepemesananR(){
@@ -147,11 +146,10 @@
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect('Owner/Barang/pemesanan/1');	  	
+	       	redirect('Owner/Barang/pemesanan');	  	
  	  	}
 
- 	  	function edit_pesanan(){
- 	  		$pemesanan_id = $this->input->post('pemesanan_id');
+ 	  	function edit_pesanan_barang($id){
  	  		$nama_pemesan = $this->input->post('nama_pemesan');
 	  		$no_hp = $this->input->post('hp');
 	  		$alamat = $this->input->post('alamat');
@@ -162,17 +160,17 @@
 
 	  		$this->m_pemesanan->edit_pesanan1($pemesanan_id,$nama_pemesan,$tanggal,$no_hp,$alamat,$kurir,$asal_transaksi,$metode_pembayaran);
 	  		echo $this->session->set_flashdata('msg','update');
-	       	redirect($this->agent->referrer());	
+	       	redirect('Owner/Barang/pemesanan');	
 	  	}
 
 	  	function hapus_pesanan(){
 	  		$pemesanan_id = $this->input->post('pemesanan_id');
 	  		$this->m_pemesanan->hapus_pesanan($pemesanan_id);
 	  		echo $this->session->set_flashdata('msg','hapus');
-	       	redirect($this->agent->referrer());	
+	       	redirect('Owner/Barang/pemesanan');	
 	  	}
 
- 	  	function list_barang($pemesanan_id){
+	  	function list_barang($pemesanan_id){
  	  		if($this->session->userdata('akses') == 1 && $this->session->userdata('masuk') == true){
  	  		   $level = $this->uri->segment(5);
  	  		   if($level == 1){
@@ -184,8 +182,8 @@
 	 	  		   $a = $this->m_list_barang->SUMLBR($pemesanan_id)->row_array();
  	  		   	   $x['jumlah'] = $a['total_keseluruhan'];
 			       $this->load->view('v_header',$y);
-			       $this->load->view('admin/v_sidebar');
-			       $this->load->view('admin/v_list_barang1',$x);
+			       $this->load->view('owner/v_sidebar');
+			       $this->load->view('owner/v_list_barang1',$x);
  	  		   }elseif($level == 2){
  	  		   	   $y['title'] = "List Barang Pemesan";
  	  		   	   $x['p_id'] = $pemesanan_id;
@@ -195,8 +193,8 @@
  	  		   	   $x['nonreseller'] = $this->m_barang->getDataNonReseller1();
  	  		   	   $x['jumlah'] = $a['total_keseluruhan'];
 			       $this->load->view('v_header',$y);
-			       $this->load->view('admin/v_sidebar');
-			       $this->load->view('admin/v_list_barang',$x);		
+			       $this->load->view('owner/v_sidebar');
+			       $this->load->view('owner/v_list_barang',$x);		
  	  		   }
 		       
 		    }
@@ -204,8 +202,6 @@
 		       redirect('Login');
 		    }
  	  	}
-
-
 
 	  	function Reseller(){
 	  		if($this->session->userdata('akses') == 1 && $this->session->userdata('masuk') == true){
@@ -331,9 +327,8 @@
 			  		$stock_akhir = $this->input->post('stock_akhir');
 			  		$barang_level = 2;
 			  		$harga_modal = str_replace(".", "", $this->input->post('harga_modal'));
-			  		$kategori_id = $this->input->post('kategori');
 
-			  		$this->m_barang->savebarang($nama_barang, $stock_awal, $stock_akhir, $harga_modal, $barang_level, $gambar, $kategori_id);
+			  		$this->m_barang->savebarang($nama_barang, $stock_awal, $stock_akhir, $harga_modal, $barang_level, $gambar);
 			  		$cadmin=$this->m_barang->getIdbyName($nama_barang);
 			  		$xcadmin=$cadmin->row_array();
 			  		$barang_id=$xcadmin['barang_id'];
@@ -370,12 +365,11 @@
 			  		$barang_id=$this->input->post('barang_id');
 			  		$bnr_id=$this->input->post('bnr_id');
 			  		$images=$this->input->post('barang_foto');
-			  		$kategori_id = $this->input->post('kategori');
                     $path='./assets/images/'.$images;
                     unlink($path);
 			  		$harga_modal = str_replace(".", "", $this->input->post('harga_modal'));
 
-			  		$this->m_barang->update_barangImage($barang_id,$nama_barang, $stock, $harga_modal, $gambar, $kategori_id);
+			  		$this->m_barang->update_barangImage($barang_id,$nama_barang, $stock, $harga_modal, $gambar);
 			  		$this->m_barang->update_barang_non_reseller($bnr_id, $harga_non_reseller);
 
 					echo $this->session->set_flashdata('msg','success_non_reseller');
@@ -391,8 +385,7 @@
 			  	$barang_id=$this->input->post('barang_id');
 			  	$bnr_id=$this->input->post('bnr_id');
 			  	$harga_modal = str_replace(".", "", $this->input->post('harga_modal'));
-			  	$kategori_id = $this->input->post('kategori');
-			  	$this->m_barang->update_barang_noImage($barang_id,$nama_barang, $stock, $harga_modal, $kategori_id);
+			  	$this->m_barang->update_barang_noImage($barang_id,$nama_barang, $stock, $harga_modal);
 			  	$this->m_barang->update_barang_non_reseller($bnr_id, $harga_non_reseller);
 	        	echo $this->session->set_flashdata('msg','success_non_reseller');
 				redirect('Owner/Barang');
@@ -423,41 +416,6 @@
 		       redirect('Login');
 		    }
  	  	}
-
- 	  	function kategori(){
- 	  		if($this->session->userdata('akses') == 1 && $this->session->userdata('masuk') == true){
- 	  			$y['title'] = "Kategori Barang";	
- 	  		   	   $x['kategori'] = $this->m_barang->getAllkategori();	
-			       $this->load->view('v_header',$y);
-			       $this->load->view('owner/v_sidebar');
-			       $this->load->view('owner/v_kategori',$x);
-		    }
-		    else{
-		       redirect('Login');
-		    }
- 	  	}
-
- 	  	function savekategori(){
-	  		$kategori_nama = $this->input->post('kategori_nama');
-	  		$this->m_barang->save_kategori($kategori_nama);
-	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect('Owner/Barang/Kategori');
-	  	}
-
-	  	function updatekategori(){
-	  		$id = $this->input->post('kategori_id');
-	  		$kategori_nama = $this->input->post('kategori_nama');
-	  		$this->m_barang->update_kategori($id,$kategori_nama);
-	  		echo $this->session->set_flashdata('msg','update');
-	       	redirect('Owner/Barang/Kategori');
-	  	}
-
-	  	function hapuskategori(){
-	  		$id = $this->input->post('kategori_id');
-	  		$this->m_barang->hapus_kategori($id);
-	  		echo $this->session->set_flashdata('msg','delete');
-	       	redirect('Owner/Barang/Kategori');
-	  	}
 
 
 	}

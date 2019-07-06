@@ -123,6 +123,7 @@
 					</div>
 				</div>
 			</header>
+	
 			<div role="main" class="main">
 
 
@@ -242,7 +243,7 @@
 											<ul class="list list-icons list-icons-style-2 mt-2">
 												<li><i class="fas fa-map-marker-alt top-6"></i> <strong class="text-dark">Lokasi:</strong> Jl. Suka ABngun 2soak simpur. Komplek horizon estate blok c no.4 kec. Sukarami Palembang</li>
 												<li><i class="fas fa-phone top-6"></i> <strong class="text-dark">Telepon:</strong> 0822-8188-1763</li>
-												<li><i class="fas fa-envelope top-6"></i> <strong class="text-dark">Shopee:</strong> <a href="mailto:mail@example.com">sabiansabia (free ongkir seluruh indonesia)</a></li>
+												<li><i class="fas fa-envelope top-6"></i> <strong class="text-dark">Shopee:</strong>sabiansabia (free ongkir seluruh indonesia)</li>
 											</ul>
 										</div>
 									</div>
@@ -250,7 +251,7 @@
 
 										<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="800">
 											<ul class="list list-icons list-icons-style-2 mt-2">
-												<li><i class="fas fa-phone top-6"></i> <strong class="text-dark">Whatsapp:</strong><a href="Bit.ly/Msglowpalembang"> MSGlowpalembang</a> </li>
+												<li><i class="fas fa-phone top-6"></i> <strong class="text-dark">Whatsapp:</strong><a href="https://api.whatsapp.com/send?phone=6282281881763" target="blank"> MSGlowpalembang</a> </li>
 												<li><i class="fas fa-phone top-6"></i> <strong class="text-dark">BBM:</strong> amelglow</li>
 												<li><i class="fas fa-phone top-6"></i> <strong class="text-dark">Line:</strong> sabiansabia</li>
 											</ul>
@@ -265,8 +266,6 @@
 
 				
 
-		</div>
-		<footer id="footer" class="m-0 p-0">
 			<div class="footer-copyright bg-color-light py-4">
 				<div class="container">
 					<div class="row">
@@ -278,6 +277,11 @@
 				</div>
 			</div>
 		</footer>
+		<div class="fixed">
+		<div style="display: flex;margin-left: 19%;margin-right: auto;">
+				<img style="width: 57px;height: 33px;" src="<?php echo base_url()?>assets/porto/img/wa.png"><a href="https://api.whatsapp.com/send?phone=6282281881763" target="blank"><p class="fixed"><b>Untuk Order Klik Disini Sekarang!!!</b></p></a>
+			</div>
+		</div>
 
 		<!-- Vendor -->
 		<script src="<?php echo base_url()?>assets/porto/vendor/jquery/jquery.min.js"></script>
@@ -319,3 +323,22 @@
 
 	</body>
 </html>
+<style type="text/css">
+	div.fixed {
+		background-color: white;
+		position: fixed;
+		margin-left: 30%;
+		margin-right: 30%;
+		width: 40%;
+		border-radius: 10px;
+		bottom: 76px;
+		border: 3px solid #8AC007;
+	} 
+
+	p.fixed{
+		margin-top: 0;
+		margin-bottom: 0;
+		text-align: center;
+		color: black;
+	}
+</style>

@@ -41,8 +41,10 @@
                 </a>
               </div>
             <?php endif;?>
-              
-            </div>
+          </div>
+            <div class="col-md-6">
+                <p class="mt-10"><b>=> Total Omset : <?php echo rupiah($total_omset)?></b></p>
+              </div>
             <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered p-0">
               <thead>
@@ -84,7 +86,10 @@
                       $at_nama = $i['at_nama'];
 
                       if($level == 1){
-                        $q=$this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+                        $x = $this->db->query("SELECT SUM(lb_qty) AS jumlah_barang FROM list_barang WHERE pemesanan_id = '$pemesanan_id'")->row_array();
+                        $jumlah = $x['jumlah_barang'];
+
+                        $q=$this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND '$jumlah' = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
                         $c=$q->row_array();
                         $jumlah = $c['total_keseluruhan'];
                       }elseif($level == 2){
@@ -112,6 +117,7 @@
                       </td>
                     </tr>
                   <?php endforeach;?>
+                    
               </tbody>
            </table>
           </div>
@@ -174,6 +180,7 @@
                                   <?php endforeach;?>
                                   </select>
                                  </div>
+
                                  <div class="col-md-12">
                                   <label class="control-label">Metode_Pembayaran</label>
                                   <select class="form-control" name="metpem" required>
@@ -182,12 +189,12 @@
                                       foreach($metode_pembayaran->result_array() as $i) :
                                         $mp_id = $i['mp_id'];
                                         $mp_nama = $i['mp_nama'];
-                                        $mp_tanggal = $i['mp_tanggal'];
                                     ?>
                                     <option value="<?php echo $mp_id?>"><?php echo $mp_nama?></option>
                                   <?php endforeach;?>
                                   </select>
                                  </div>
+
                                       <div class="form-group col-md-12 mt-10" id="dynamic_field">
                                         <div class="row"> 
                                           <div class="col-md-8">
@@ -278,20 +285,21 @@
                                   <?php endforeach;?>
                                   </select>
                                  </div>
+
                                  <div class="col-md-12">
-                                  <label class="control-label">Metode Pembayaran</label>
+                                  <label class="control-label">Metode_Pembayaran</label>
                                   <select class="form-control" name="metpem" required>
                                     <option selected value="">Pilih</option>
                                     <?php
                                       foreach($metode_pembayaran->result_array() as $i) :
                                         $mp_id = $i['mp_id'];
                                         $mp_nama = $i['mp_nama'];
-                                        $mp_tanggal = $i['mp_tanggal'];
                                     ?>
                                     <option value="<?php echo $mp_id?>"><?php echo $mp_nama?></option>
                                   <?php endforeach;?>
                                   </select>
                                  </div>
+
                                       <div class="form-group col-md-12 mt-10" id="dynamic_field1">
                                         <div class="row"> 
                                           <div class="col-md-8">
@@ -364,7 +372,7 @@
                                     <label class="control-label">No HP</label>
                                     <input class="form-control form-white" type="number" name="hp" value="<?php echo $hp?>" required/>
                                 </div>
- <!--                                <div class="col-md-12">
+                                <!-- <div class="col-md-12">
                                     <label class="control-label">Tanggal</label>
                                     <input class="form-control form-white" type="date" name="tanggal"/>
                                 </div> -->

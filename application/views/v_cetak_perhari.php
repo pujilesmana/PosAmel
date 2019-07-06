@@ -11,7 +11,9 @@
 
 @page {size: landscape;}
 
-
+th,td{
+  font-size: 14px;
+}
 </style>
 <body>
      <div>
@@ -24,18 +26,17 @@
 
              <table border="1" cellpadding="7" width="100%" style="border-style: solid;border-width: thin;border-collapse: collapse;" >
               <tr>
-                <th width="5">No</th>
-                      <th width="50">Nama Pemesan</th>
+                      <th width="5">No</th>
+                      <th>Nama Pemesan</th>
                       <th>No HP</th>
                       <th><center>Alamat</center></th>
-                      <th width="20">Kurir</th>
-                      <th width="30">Asal Transaksi</th>
-                      <th>Barang</th>
+                      <th style="width:150px;">Barang</th>
                       <th>Total Omset</th>
+                      <th>Total Untung</th>
               </tr>
                   <?php
                     function rupiah($angka){
-                      $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+                      $hasil_rupiah = number_format($angka,0,',','.');
                       return $hasil_rupiah;
                     }
 
@@ -70,8 +71,8 @@
                       <td><?php echo $pemesanan_nama?></td>
                       <td><?php echo $hp?></td>
                       <td><?php echo $alamat?></td>
-                      <td><?php echo $kurir_nama?></td>
-                      <td><?php echo $at_nama?></td>
+                     <!--  <td><?php echo $kurir_nama?></td>
+                      <td><?php echo $at_nama?></td> -->
                       <td>
                         <?php
                           $z=$this->db->query("SELECT a.lb_id,a.pemesanan_id,a.lb_qty,a.barang_id,b.pemesanan_nama,c.barang_nama,d.bnr_harga, a.lb_qty * d.bnr_harga AS total FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
@@ -85,14 +86,14 @@
                         ?>
                       </td>
                       <td><?php echo rupiah($omset)?></td>
+                      <td><?php echo rupiah($untung)?></td>
                     </tr>
                   <?php endforeach;?>
-                  <tfoot>
                     <tr>
-                      <th colspan="7"><center>Jumlah</center></th>
+                      <th colspan="5"><center>Jumlah</center></th>
                       <th><?php echo rupiah($total_omset)?></th>
+                      <th><?php echo rupiah($total_untung)?></th>
                     </tr>
-                  </tfoot>
              </table>
       </div>
 

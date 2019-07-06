@@ -65,9 +65,9 @@
           </div>
         <?php endforeach;?>
         <p style="border: 2px solid;border-radius: 5px;margin-top:10px;margin-bottom: 0" class="text-center"><b><?php echo $kurir?></b></p>
+        <p style="border: 2px solid;border-radius: 5px;margin-top: 5px;margin-bottom: 0" class="text-center"><b><?php echo $at?></b></p>
         <p style="border: 2px solid;border-radius: 5px;margin-top: 5px;margin-bottom: 0" class="text-center"><b><?php echo $mp_nama?></b></p>
         <p style="border: 2px solid;border-radius: 5px;margin-top: 5px;" class="text-center"><b>User</b> : <?php echo $nama?></p>
-
         </div>        
       </div>
     <hr style="color: black;margin-top: 10px;margin-bottom: 10px; border-color: black;width: 100%;">
