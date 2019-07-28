@@ -35,7 +35,7 @@
 		       	$pemesanan_id = $i['pemesanan_id'];
 		       	$level = $i['level'];
 		       	if($level == 1){
-		       		$t = $this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_omset, (SUM(a.lb_qty * d.br_harga))-(SUM(a.lb_qty * c.barang_harga_modal)) AS total_untung FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+		       		$t = $this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_omset, (SUM(a.lb_qty * d.br_harga))-(SUM(a.lb_qty * c.barang_harga_modal)) AS total_untung FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.ktg_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
               		$d=$t->row_array();
                		$total_omset = $d['total_omset'];
 		       	}elseif($level == 2){
@@ -149,9 +149,34 @@
 			$pemesanan_id=$z['pemesanan_id'];
 
 	  		$size = sizeof($barang_id);
-
+	  		$kategori_id_all=array();
+	  		$qty_barang_all=array();
 	  		for($i=0; $i < $size; $i++){
-	  			$this->m_list_barang->save_list_barang($pemesanan_id,$qty[$i],$barang_id[$i],$level);
+	  			$kategori_id=$this->m_barang->get_kategori_id_barang($barang_id[$i])[0]['id_kategori'];
+	  			array_push($kategori_id_all,$kategori_id);
+	  			array_push($qty_barang_all,$qty[$i]);
+	  			// $this->m_list_barang->save_list_barang($pemesanan_id,$qty[$i],$barang_id[$i],$level);
+	  		}
+
+	  		$total_qty_barang_all=array();
+	  		for($i=0; $i<sizeof($kategori_id_all); $i++){
+	  			if($kategori_id_all[$i]==0){
+	  				array_push($total_qty_barang_all,$qty[$i]);
+	  			}else{
+	  				$qty_totals=$qty_barang_all[$i];
+	  				for($j=0; $j<sizeof($kategori_id_all); $j++){
+	  					if($i!=$j){
+	  						if($kategori_id_all[$i]==$kategori_id_all[$j]){
+	  							$qty_totals=$qty_totals+$qty_barang_all[$j];
+	  						}
+	  					}
+	  				}
+	  				array_push($total_qty_barang_all,$qty_totals);
+	  			}
+	  		}
+	  	
+	  		for($i=0; $i < $size; $i++){
+	  			$this->m_list_barang->save_lists_barang($pemesanan_id,$qty[$i],$barang_id[$i],$level,$total_qty_barang_all[$i]);
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
@@ -343,6 +368,42 @@
 	  	}
 
 	  	function hapusMetodePembayaran(){
+	  		$id = $this->input->post('mp_id');
+	  		$this->m_pemesanan->hapus_Metpem($id);
+	  		echo $this->session->set_flashdata('msg','delete');
+	       	redirect('Admin/Pemesanan/metode_pembayaran');
+	  	}
+
+
+	  	function kategori_barang(){
+	  		if($this->session->userdata('akses') == 2 && $this->session->userdata('masuk') == true){
+		       $y['title'] = "Kategori Barang";
+		       $x['metpem'] = $this->m_pemesanan->getAllkategori();
+		       $this->load->view('v_header',$y);
+		       $this->load->view('admin/v_sidebar');
+		       $this->load->view('admin/v_kategori',$x);
+		    }
+		    else{
+		       redirect('Login');
+		    }
+	  	}
+
+	  	function save_kategori(){
+	  		$metpem_nama = $this->input->post('mp_nama');
+	  		$this->m_pemesanan->save_Metpem($metpem_nama);
+	  		echo $this->session->set_flashdata('msg','success');
+	       	redirect('Admin/Pemesanan/metode_pembayaran');
+	  	}
+
+	  	function update_kategori(){
+	  		$id = $this->input->post('mp_id');
+	  		$metpem_nama = $this->input->post('mp_nama');
+	  		$this->m_pemesanan->update_Metpem($id,$metpem_nama);
+	  		echo $this->session->set_flashdata('msg','update');
+	       	redirect('Admin/Pemesanan/metode_pembayaran');
+	  	}
+
+	  	function hapus_kategori(){
 	  		$id = $this->input->post('mp_id');
 	  		$this->m_pemesanan->hapus_Metpem($id);
 	  		echo $this->session->set_flashdata('msg','delete');

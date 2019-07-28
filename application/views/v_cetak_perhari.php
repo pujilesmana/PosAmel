@@ -19,7 +19,8 @@ th,td{
      <div>
           
           <div class="col-xl-12">
-            <center><h1>Laporan Transaksi</h1></center>
+            <center><h1>Laporan Transaksi <?php echo $levels?></h1></center>
+            <center><h1><?php echo $tanggal?></h1></center>
           </div>
           <hr style="margin-left:10px;margin-right:10px;">
           <br>
@@ -55,7 +56,7 @@ th,td{
                       $at_nama = $i['at_nama'];
 
                       if($level == 1){
-                        $q=$this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan, ((SUM(a.lb_qty * d.br_harga))-SUM(a.lb_qty * c.barang_harga_modal)) AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id"); 
+                        $q=$this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan, ((SUM(a.lb_qty * d.br_harga))-SUM(a.lb_qty * c.barang_harga_modal)) AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.ktg_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id"); 
                         $c=$q->row_array();
                         $omset = $c['total_keseluruhan'];
                         $untung = $c['total'];
@@ -73,14 +74,30 @@ th,td{
                       <td><?php echo $alamat?></td>
                      <!--  <td><?php echo $kurir_nama?></td>
                       <td><?php echo $at_nama?></td> -->
+
                       <td>
                         <?php
-                          $z=$this->db->query("SELECT a.lb_id,a.pemesanan_id,a.lb_qty,a.barang_id,b.pemesanan_nama,c.barang_nama,d.bnr_harga, a.lb_qty * d.bnr_harga AS total FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+                           if($level==1){
 
-                          foreach ($z->result_array() as $i ) {
-                            $barang_nama = $i['barang_nama'];
-                            echo "- ".$barang_nama."<br>";
+                               $z=$this->db->query("SELECT a.lb_id,a.pemesanan_id,a.lb_qty,a.barang_id,b.pemesanan_nama,c.barang_nama,d.br_harga, a.lb_qty * d.br_harga AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.ktg_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+
+                                foreach ($z->result_array() as $i ) {
+                                  $barang_nama = $i['barang_nama'];
+                                  echo "- ".$barang_nama."<br>";
+                                }
+
+                          }else  if($level==2){
+                               $z=$this->db->query("SELECT a.lb_id,a.pemesanan_id,a.lb_qty,a.barang_id,b.pemesanan_nama,c.barang_nama,d.bnr_harga, a.lb_qty * d.bnr_harga AS total FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+                               
+                                foreach ($z->result_array() as $i ) {
+
+                                    $barang_nama = $i['barang_nama'];
+
+                                    echo "- ".$barang_nama."<br>";
+
+                                  }
                           }
+                         
                           
                           
                         ?>

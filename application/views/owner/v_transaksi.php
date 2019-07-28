@@ -75,7 +75,7 @@
                       $at_nama = $i['at_nama'];
 
                       if($level == 1){
-                        $q=$this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan, ((SUM(a.lb_qty * d.br_harga))-SUM(a.lb_qty * c.barang_harga_modal)) AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id"); 
+                        $q=$this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan, ((SUM(a.lb_qty * d.br_harga))-SUM(a.lb_qty * c.barang_harga_modal)) AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.ktg_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id"); 
                         $c=$q->row_array();
                         $omset = $c['total_keseluruhan'];
                         $untung = $c['total'];
@@ -208,16 +208,24 @@
         </div>
               
             <?php endif;?>
-            
-         
-        <div class="modal" tabindex="-1" role="dialog" id="cetak_tanggal">
+
+
+             <!-- Modal edit Data -->
+      <?php if($level1 == 0) :?>
+                
+
+               <div class="modal" tabindex="-1" role="dialog" id="cetak_tanggal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Pilih tanggal</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?= base_url()?>Owner/Transaksi/cetak_transaksiTanggal" method="post" enctype="multipart/form-data">
+                    
+                    <form action="<?= base_url()?>Owner/Transaksi/cetak_transaksiTanggal/0" method="post" enctype="multipart/form-data">
+                       
+                        
+                           
                     <div class="modal-body p-20">
                             <div class="row">
                                <div class="col-md-6">
@@ -238,7 +246,85 @@
                 </div>
             </div>
         </div>
+              
+              <?php elseif($level1 == 1) :?>
+             
+               
+              <div class="modal" tabindex="-1" role="dialog" id="cetak_tanggal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Pilih tanggal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    
+                    <form action="<?= base_url()?>Owner/Transaksi/cetak_transaksiTanggal/1" method="post" enctype="multipart/form-data">
+                       
+                        
+                           
+                    <div class="modal-body p-20">
+                            <div class="row">
+                               <div class="col-md-6">
+                                      <label class="control-label">Dari Tanggal*</label>
+                                      <input class="form-control form-white" type="date" name="daritgl" required/>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label class="control-label">Ke Tanggal*</label>
+                                      <input class="form-control form-white" type="date" name="ketgl" required/>
+                                  </div>
+                            </div>          
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger ripple" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success ripple save-category" id="simpan">Cari</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+            <?php elseif($level1 == 2) :?>
+             
+                
+              <div class="modal" tabindex="-1" role="dialog" id="cetak_tanggal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Pilih tanggal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    
+                    <form action="<?= base_url()?>Owner/Transaksi/cetak_transaksiTanggal/2" method="post" enctype="multipart/form-data">
+                       
+                        
+                           
+                    <div class="modal-body p-20">
+                            <div class="row">
+                               <div class="col-md-6">
+                                      <label class="control-label">Dari Tanggal*</label>
+                                      <input class="form-control form-white" type="date" name="daritgl" required/>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label class="control-label">Ke Tanggal*</label>
+                                      <input class="form-control form-white" type="date" name="ketgl" required/>
+                                  </div>
+                            </div>          
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger ripple" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success ripple save-category" id="simpan">Cari</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+              
+            <?php endif;?>
+            
+         
+        
   </div>
+  
 
     
 <!--=================================

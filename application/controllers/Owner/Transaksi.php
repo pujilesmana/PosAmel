@@ -145,13 +145,19 @@
 		    }
 	  	}
 
-	  	function cetak_transaksiTanggal(){
+	  	function cetak_transaksiTanggal($levels){
 	  		$dari = $this->input->post('daritgl');
 		    $ke = $this->input->post('ketgl');
 		    $x['dari'] = $dari;
 		    $x['ke'] = $ke;
-		    $x['data'] = $this->m_pemesanan->getPemesananMonth($dari,$ke);
-	  		$a = $this->m_pemesanan->getPemesananMonth($dari,$ke);
+		    if($levels==0){
+		       		 $x['data'] = $this->m_pemesanan->getPemesananMonth($dari,$ke);
+		       		$a = $this->m_pemesanan->getPemesananMonth($dari,$ke);
+		       }else{
+		       	 $x['data'] = $this->m_pemesanan->getPemesananMonth_filter($dari,$ke,$levels);
+		       		$a = $this->m_pemesanan->getPemesananMonth_filter($dari,$ke,$levels);
+		       }
+		  
 		       $total_u = 0;
 		       $total_o = 0;
 		       foreach ($a->result_array() as $i) {
@@ -177,6 +183,15 @@
                $total_omset = $total_o;
                $x['total_untung'] = $total_untung;
                $x['total_omset'] = $total_omset;
+               $x['tanggal']=$dari." sampai ".$ke;
+               if($levels==0){
+               	$x['levels']="Keseluruhan";
+               }else if($levels==1){
+               		$x['levels']="Reseller";
+               }else if($levels==2){
+               		$x['levels']="Customer";
+               }
+               	$x['level']=$levels;
 	  		$this->load->view('v_cetak_perhari',$x);
 	  	}
 
@@ -239,6 +254,17 @@
                $total_omset = $total_o;
                $x['total_untung'] = $total_untung;
                $x['total_omset'] = $total_omset;
+               date_default_timezone_set("Asia/Jakarta");
+        		$cur_date = date("Y-m-d");
+               $x['tanggal']=$cur_date;
+               if($level1==0){
+               	$x['levels']="Keseluruhan";
+               }else if($level1==1){
+               		$x['levels']="Reseller";
+               }else if($level1==2){
+               		$x['levels']="Customer";
+               }
+               	$x['level']=$level1;
 	  		$this->load->view('v_cetak_perhari',$x);
 	  	}
 	}

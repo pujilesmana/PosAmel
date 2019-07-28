@@ -22,6 +22,22 @@
 	        return false;
 		}
 
+		function save_lists_barang($pemesanan_id,$qty,$barang_id,$lvl,$ktg_qty){
+			$this->db->trans_start();
+				// $cek = $this->db->query("SELECT * FROM list_barang WHERE pemesanan_id = '$pemesanan_id' AND barang_id ='$barang_id'");
+				// if($cek->num_rows > 0){
+
+				// }
+				$this->db->query("INSERT INTO list_barang(pemesanan_id,lb_qty,barang_id,lb_lvl,ktg_qty) VALUES ('$pemesanan_id','$qty','$barang_id','$lvl','$ktg_qty')");
+				$this->db->query("UPDATE barang SET barang_stock_akhir = barang_stock_akhir-'$qty' WHERE barang_id = '$barang_id'");
+				$this->db->query("INSERT INTO history_stock_barang(pemesanan_id,barang_id,stock_berkurang,lvl) VALUES ('$pemesanan_id','$barang_id','$qty','$lvl')");
+	      	$this->db->trans_complete();
+	        if($this->db->trans_status()==true)
+	        return true;
+	        else
+	        return false;
+		}
+
 		function hapus_list_barang($pemesanan_id,$lb_id,$qty,$barang_id){
 			$this->db->trans_start();
 				$this->db->query("DELETE FROM list_barang WHERE lb_id='$lb_id'");
@@ -49,7 +65,7 @@
 			// $x = $this->db->query("SELECT SUM(lb_qty) AS jumlah_barang FROM list_barang WHERE pemesanan_id = '$pemesanan_id'")->row_array();
 			// $jumlah = $x['jumlah_barang'];
 
-			$hasil=$this->db->query("SELECT a.lb_id,a.pemesanan_id,a.lb_qty,a.barang_id,b.pemesanan_nama,c.barang_nama,d.br_harga,a.lb_qty * d.br_harga AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.lb_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+			$hasil=$this->db->query("SELECT a.lb_id,a.pemesanan_id,a.lb_qty,a.barang_id,b.pemesanan_nama,c.barang_nama,d.br_harga,a.lb_qty * d.br_harga AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.ktg_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
         	return $hasil;
 		}
 

@@ -41,6 +41,7 @@
 
 		function getPemesananMonth_filter($dari,$ke,$level){
 			$hasil=$this->db->query("SELECT a.*,b.*,c.*,DATE_FORMAT(pemesanan_tanggal,'%d/%m/%Y') AS tanggal FROM pemesanan a, kurir b, asal_transaksi c WHERE (a.pemesanan_tanggal BETWEEN '$dari' AND '$ke') AND a.kurir_id = b.kurir_id AND a.at_id = c.at_id AND a.level = '$level' ORDER BY a.pemesanan_id DESC");
+			
         	return $hasil;
 		}
 
@@ -160,6 +161,28 @@
 
     	function SUMANR(){
     		return $this->db->query("SELECT SUM(a.lb_qty * d.bnr_harga) AS total_keseluruhan FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+    	}
+
+
+
+    	function getAllkategori(){
+			$hasil=$this->db->query("SELECT * FROM kategori");
+        	return $hasil;
+		}
+
+		function save_kategori($nama){
+			$hsl = $this->db->query("INSERT INTO kategori(nama_kategori) VALUES ('$nama')");
+        	return $hsl;
+		}
+
+		function update_kategori($id,$nama){
+			$hsl = $this->db->query("UPDATE kategori SET nama_kategori='$nama' WHERE id_kategori='$id'");
+        	return $hsl;
+		}
+
+		function hapus_kategori($id){
+	      	$hsl = $this->db->query("DELETE FROM kategori WHERE id_kategori='$id'");
+	      	return $hsl;
     	}
 	}
 ?>

@@ -130,6 +130,20 @@
                                     <label class="control-label">Foto Barang</label>
                                     <input class="form-control form-white" type="file" name="filefoto" />
                                 </div>
+                                <div class="col-md-12">
+                                  <label class="control-label">Kategori Barang</label>
+                                  <select class="form-control" name="kategori" required>
+                                    <option selected value="">Pilih</option>
+                                    <?php
+                                      foreach($kategori->result_array() as $i) :
+                                        $barang_id = $i['id_kategori'];
+                                        $barang_nama = $i['nama_kategori'];
+
+                                    ?>
+                                    <option value="<?php echo $barang_id?>"><?php echo $barang_nama?></option>
+                                    <?php endforeach;?>
+                                  </select>
+                                </div>
                             </div>          
                     </div>
                     <div class="modal-footer">
