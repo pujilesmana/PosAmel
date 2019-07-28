@@ -92,7 +92,7 @@
                         <h5 class="modal-title">Tambah Kurir</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <form action="<?php echo base_url()?>Admin/Pemesanan/tambahpesananR" method="post" enctype="multipart/form-data">
+                    <form action="<?php echo base_url()?>Owner/Barang/tambahpesananR" method="post" enctype="multipart/form-data">
                     <div class="modal-body p-20">
                             <div class="row">
                                 <div class="form-group col-md-12 mt-10" id="dynamic_field1">

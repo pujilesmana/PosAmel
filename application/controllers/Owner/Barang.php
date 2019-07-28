@@ -87,9 +87,34 @@
 	  		$qty = $this->input->post('qty');
 
 	  		$size = sizeof($barang_id);
-
+	  		$kategori_id_all=array();
+	  		$qty_barang_all=array();
 	  		for($i=0; $i < $size; $i++){
-	  			$this->m_list_barang->save_list_barang($pemesanan_id,$qty[$i],$barang_id[$i],$level);
+	  			$kategori_id=$this->m_barang->get_kategori_id_barang($barang_id[$i])[0]['id_kategori'];
+	  			array_push($kategori_id_all,$kategori_id);
+	  			array_push($qty_barang_all,$qty[$i]);
+	  			// $this->m_list_barang->save_list_barang($pemesanan_id,$qty[$i],$barang_id[$i],$level);
+	  		}
+
+	  		$total_qty_barang_all=array();
+	  		for($i=0; $i<sizeof($kategori_id_all); $i++){
+	  			if($kategori_id_all[$i]==0){
+	  				array_push($total_qty_barang_all,$qty[$i]);
+	  			}else{
+	  				$qty_totals=$qty_barang_all[$i];
+	  				for($j=0; $j<sizeof($kategori_id_all); $j++){
+	  					if($i!=$j){
+	  						if($kategori_id_all[$i]==$kategori_id_all[$j]){
+	  							$qty_totals=$qty_totals+$qty_barang_all[$j];
+	  						}
+	  					}
+	  				}
+	  				array_push($total_qty_barang_all,$qty_totals);
+	  			}
+	  		}
+	  	
+	  		for($i=0; $i < $size; $i++){
+	  			$this->m_list_barang->save_lists_barang($pemesanan_id,$qty[$i],$barang_id[$i],$level,$total_qty_barang_all[$i]);
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
@@ -141,13 +166,38 @@
 			$pemesanan_id=$z['pemesanan_id'];
 
 	  		$size = sizeof($barang_id);
-
+	  		$kategori_id_all=array();
+	  		$qty_barang_all=array();
 	  		for($i=0; $i < $size; $i++){
-	  			$this->m_list_barang->save_list_barang($pemesanan_id,$qty[$i],$barang_id[$i],$level);
+	  			$kategori_id=$this->m_barang->get_kategori_id_barang($barang_id[$i])[0]['id_kategori'];
+	  			array_push($kategori_id_all,$kategori_id);
+	  			array_push($qty_barang_all,$qty[$i]);
+	  			// $this->m_list_barang->save_list_barang($pemesanan_id,$qty[$i],$barang_id[$i],$level);
+	  		}
+
+	  		$total_qty_barang_all=array();
+	  		for($i=0; $i<sizeof($kategori_id_all); $i++){
+	  			if($kategori_id_all[$i]==0){
+	  				array_push($total_qty_barang_all,$qty[$i]);
+	  			}else{
+	  				$qty_totals=$qty_barang_all[$i];
+	  				for($j=0; $j<sizeof($kategori_id_all); $j++){
+	  					if($i!=$j){
+	  						if($kategori_id_all[$i]==$kategori_id_all[$j]){
+	  							$qty_totals=$qty_totals+$qty_barang_all[$j];
+	  						}
+	  					}
+	  				}
+	  				array_push($total_qty_barang_all,$qty_totals);
+	  			}
+	  		}
+	  	
+	  		for($i=0; $i < $size; $i++){
+	  			$this->m_list_barang->save_lists_barang($pemesanan_id,$qty[$i],$barang_id[$i],$level,$total_qty_barang_all[$i]);
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect('Owner/Barang/pemesanan');	  	
+	       	redirect($this->agent->referrer());	  	  	
  	  	}
 
  	  	function edit_pesanan_barang($id){
