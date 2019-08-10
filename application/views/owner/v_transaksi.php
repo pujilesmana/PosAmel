@@ -49,6 +49,7 @@
                       <th>Alamat</th>
                       <th>Kurir</th>
                       <th>Asal Transaksi</th>
+                      <th>Metode Pembayaran</th>
                       <th>Total Omset</th>
                       <th>Total Keuntungan</th>
                   </tr>
@@ -72,6 +73,7 @@
                       $level = $i['level'];
                       $kurir_nama = $i['kurir_nama'];
                       $at_id = $i['at_id'];
+                       $mp_nama = $i['mp_nama'];
                       $at_nama = $i['at_nama'];
 
                       if($level == 1){
@@ -98,6 +100,7 @@
                       <td><?php echo $alamat?></td>
                       <td><?php echo $kurir_nama?></td>
                       <td><?php echo $at_nama?></td>
+                      <td><?php echo $mp_nama?></td>
                       <td><?php echo rupiah($omset)?></td>
                       <td><?php echo rupiah($untung)?></td>
                     </tr>

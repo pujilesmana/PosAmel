@@ -27,13 +27,15 @@ th,td{
 
              <table border="1" cellpadding="7" width="100%" style="border-style: solid;border-width: thin;border-collapse: collapse;" >
               <tr>
-                      <th width="5">No</th>
-                      <th>Nama Pemesan</th>
-                      <th>No HP</th>
-                      <th><center>Alamat</center></th>
-                      <th style="width:150px;">Barang</th>
-                      <th>Total Omset</th>
-                      <th>Total Untung</th>
+                      <th style="width: 2%;">No</th>
+                      <th style="width: 18%;">Nama Pemesan</th>
+                      <th style="width: 8%;">No HP</th>
+                      <th style="width: 20%;">Alamat</th>
+                      <th style="width: 5%;"> Kurir </th>
+                      <th style="width: 5%;"> Metode Pembayaran </th>
+                      <th style="width: 13%;">Barang</th>
+                      <th style="width: 8%;">Total Omset</th>
+                      <th style="width: 9%;">Total Untung</th>
               </tr>
                   <?php
                     function rupiah($angka){
@@ -53,7 +55,7 @@ th,td{
                       $level = $i['level'];
                       $kurir_nama = $i['kurir_nama'];
                       $at_id = $i['at_id'];
-                      $at_nama = $i['at_nama'];
+                      $at_nama = $i['mp_nama'];
 
                       if($level == 1){
                         $q=$this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_keseluruhan, ((SUM(a.lb_qty * d.br_harga))-SUM(a.lb_qty * c.barang_harga_modal)) AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND a.ktg_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id"); 
@@ -68,14 +70,14 @@ th,td{
                       }
                   ?>
                     <tr>
-                      <td><center><?php echo $no?></center></td>
-                      <td><?php echo $pemesanan_nama?></td>
-                      <td><?php echo $hp?></td>
-                      <td><?php echo $alamat?></td>
-                     <!--  <td><?php echo $kurir_nama?></td>
-                      <td><?php echo $at_nama?></td> -->
+                      <td style="word-break: break-all;"><center><?php echo $no?></center></td>
+                      <td style="word-break: break-all;"><?php echo $pemesanan_nama?></td>
+                      <td style="word-break: break-all;"><?php echo $hp?></td>
+                      <td style="word-break: break-all;"><?php echo $alamat?></td>
+                      <td style="word-break: break-all;"><?php echo $kurir_nama?></td>
+                      <td style="word-break: break-all;"><?php echo $at_nama?></td>
 
-                      <td>
+                      <td style="word-break: break-all;">
                         <?php
                            if($level==1){
 
@@ -102,14 +104,14 @@ th,td{
                           
                         ?>
                       </td>
-                      <td><?php echo rupiah($omset)?></td>
-                      <td><?php echo rupiah($untung)?></td>
+                      <td style="word-break: break-all;">Rp. <?php echo rupiah($omset)?></td>
+                      <td style="word-break: break-all;">Rp. <?php echo rupiah($untung)?></td>
                     </tr>
                   <?php endforeach;?>
                     <tr>
-                      <th colspan="5"><center>Jumlah</center></th>
-                      <th><?php echo rupiah($total_omset)?></th>
-                      <th><?php echo rupiah($total_untung)?></th>
+                      <th colspan="7"><center>Jumlah</center></th>
+                      <th>Rp. <?php echo rupiah($total_omset)?></th>
+                      <th>Rp. <?php echo rupiah($total_untung)?></th>
                     </tr>
              </table>
       </div>
