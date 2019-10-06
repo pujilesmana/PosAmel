@@ -50,6 +50,7 @@
                       <th>Kurir</th>
                       <th>Asal Transaksi</th>
                       <th>Metode Pembayaran</th>
+                      <th style="width: 13%;">Barang</th>
                       <th>Total Omset</th>
                       <th>Total Keuntungan</th>
                   </tr>
@@ -101,6 +102,35 @@
                       <td><?php echo $kurir_nama?></td>
                       <td><?php echo $at_nama?></td>
                       <td><?php echo $mp_nama?></td>
+                      <td style="word-break: break-all;">
+                        <?php
+                           if($level==1){
+
+                               $z=$this->db->query("SELECT a.lb_id,a.pemesanan_id,a.lb_qty,a.barang_id,b.pemesanan_nama,c.barang_nama,d.br_harga, a.lb_qty * d.br_harga AS total FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.ktg_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
+
+                                foreach ($z->result_array() as $i ) {
+                                  $barang_nama = $i['barang_nama'];
+                                   $jumlah_barang = $i['lb_qty'];
+                                   echo "- ".$barang_nama."=  ".$jumlah_barang."<br>";
+                                }
+
+                          }else  if($level==2){
+                               $z=$this->db->query("SELECT a.lb_id,a.pemesanan_id,a.lb_qty,a.barang_id,b.pemesanan_nama,c.barang_nama,d.bnr_harga, a.lb_qty * d.bnr_harga AS total FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+                               
+                                foreach ($z->result_array() as $i ) {
+
+                                    $barang_nama = $i['barang_nama'];
+
+                                     $jumlah_barang = $i['lb_qty'];
+                                   echo "- ".$barang_nama."=  ".$jumlah_barang."<br>";
+
+                                  }
+                          }
+                         
+                          
+                          
+                        ?>
+                      </td>
                       <td><?php echo rupiah($omset)?></td>
                       <td><?php echo rupiah($untung)?></td>
                     </tr>

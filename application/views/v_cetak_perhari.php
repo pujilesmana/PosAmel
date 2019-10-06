@@ -85,7 +85,8 @@ th,td{
 
                                 foreach ($z->result_array() as $i ) {
                                   $barang_nama = $i['barang_nama'];
-                                  echo "- ".$barang_nama."<br>";
+                                   $jumlah_barang = $i['lb_qty'];
+                                  echo "- ".$barang_nama."=  ".$jumlah_barang."<br>";
                                 }
 
                           }else  if($level==2){
@@ -95,7 +96,8 @@ th,td{
 
                                     $barang_nama = $i['barang_nama'];
 
-                                    echo "- ".$barang_nama."<br>";
+                                     $jumlah_barang = $i['lb_qty'];
+                                   echo "- ".$barang_nama."=  ".$jumlah_barang."<br>";
 
                                   }
                           }

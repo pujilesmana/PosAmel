@@ -86,7 +86,7 @@
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect($this->agent->referrer());		  	
+	       	redirect('Admin/Pemesanan/Home/1');		  	
  	  	}
 
  	  	function tambahpesananNR(){
@@ -205,7 +205,7 @@
 	  		}
 
 	  		echo $this->session->set_flashdata('msg','success');
-	       	redirect($this->agent->referrer());	  	
+	       	redirect('Admin/Pemesanan/Home/1');	  	
  	  	}
 
  	  	function edit_pesanan(){
