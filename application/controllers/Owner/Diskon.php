@@ -57,36 +57,37 @@
 	  		$diskon = str_replace(".", "", $this->input->post('diskon'));
 	  		$barang_id = $this->input->post('barang_id');
 	  		$diskon_id = $this->input->post('diskon_id');
-
+	  			$tanggal_mulai_diskon = $this->input->post('tanggal_mulai_diskon');
+	  		$tanggal_akhir_diskon = $this->input->post('tanggal_akhir_diskon');
 
 	  		if($diskon > 100){
-	  			$this->m_barang->updateDiskon($diskon_id,$barang_id,$diskon);
+	  			$this->m_diskon->updateDiskon($diskon_id,$barang_id,$diskon,$tanggal_mulai_diskon,$tanggal_akhir_diskon);
 	  			echo $this->session->set_flashdata('msg','update');
 	            redirect('Owner/Diskon');
 	  		}elseif($diskon <= 100){
 	  			$a = $this->db->query("SELECT * FROM barang_non_reseller WHERE barang_id='$barang_id'")->row_array();
 	  			$diskon_new = ($a['bnr_harga'] * $diskon)/100;
-	  			$this->m_barang->updateDiskon($diskon_id,$barang_id,$diskon_new);
+	  			$this->m_diskon->updateDiskon($diskon_id,$barang_id,$diskon,$tanggal_mulai_diskon,$tanggal_akhir_diskon);
 	  			echo $this->session->set_flashdata('msg','update');
 	            redirect('Owner/Diskon');
 	  		}
 	  	}
 
-	  	function hapus_diskon(){
-	  		$barang_id = $this->input->post('barang_id');
-	  		$diskon_id = $this->input->post('diskon_id');
-	  		$this->m_barang->hapusDiskon($diskon_id,$barang_id);
-	  		echo $this->session->set_flashdata('msg','delete');
-	        redirect('Owner/Diskon');
-	  	}
+	  	// function hapus_diskon(){
+	  	// 	$barang_id = $this->input->post('barang_id');
+	  	// 	$diskon_id = $this->input->post('diskon_id');
+	  	// 	$this->m_diskon->hapusDiskon($diskon_id,$barang_id);
+	  	// 	echo $this->session->set_flashdata('msg','delete');
+	   //      redirect('Owner/Diskon');
+	  	// }
 
-	  	function hapus_diskon_t(){
-	  		$tanggal = $this->input->post('tanggal');
+	  	// function hapus_diskon_t(){
+	  	// 	$tanggal = $this->input->post('tanggal');
 
-	  		$this->m_barang->hapusDiskonT($tanggal);
-	  		echo $this->session->set_flashdata('msg','delete');
-	        redirect('Owner/Diskon');
-	  	}
+	  	// 	$this->m_diskon->hapusDiskonT($tanggal);
+	  	// 	echo $this->session->set_flashdata('msg','delete');
+	   //      redirect('Owner/Diskon');
+	  	// }
 
 
 	}

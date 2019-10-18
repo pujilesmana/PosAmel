@@ -23,11 +23,11 @@
                   <i class="fa fa-plus pr-2"></i> Tambah Diskon
                 </a>
               </div>
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <a href="" data-toggle="modal" data-target="#tanggal" class="btn btn-danger btn-block ripple m-t-20">
                   <i class="fa fa-trash pr-2"></i>Hapus Diskon By Tanggal
                 </a>
-              </div>
+              </div> -->
             </div>
             
             <div class="table-responsive">
@@ -67,7 +67,7 @@
                     <td><?= $akhir_diskon?></td>
                     <td>
                           <a href="#" style="margin-right: 10px; margin-left: 10px;" data-toggle="modal" data-target="#editdata<?php echo $diskon_id?>"><span class="ti-pencil"></span></a>
-                          <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $diskon_id?>"><span class="ti-trash"></span></a>
+                          <!-- <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $diskon_id?>"><span class="ti-trash"></span></a> -->
                       </td>
                     </tr>
                   <?php endforeach;?>
@@ -176,6 +176,14 @@
                                     <input type="hidden" name="diskon_id" value="<?php echo $diskon_id?>">
                                     <input type="hidden" name="barang_id" value="<?php echo $barang_id?>">
                                     <input class="form-control form-white money" type="text" name="diskon" value="<?php echo $harga_potongan?>" required />
+                                </div>
+                                  <div class="col-md-12">
+                                    <label class="control-label mt-10">Tanggal Mulai Diskon</label>
+                                    <input class="form-control form-white" type="date" name="tanggal_mulai_diskon" required />
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="control-label mt-10">Tanggal Berakhir Diskon</label>
+                                    <input class="form-control form-white" type="date" name="tanggal_akhir_diskon" required />
                                 </div>
                             </div>          
                     </div>

@@ -24,9 +24,11 @@
 	        return false;
 		}
 
-		function updateDiskon($diskon_id,$barang_id,$diskon){
+		function updateDiskon($diskon_id,$barang_id,$diskon,$tanggal_mulai,$tanggal_berakhir){
 			$this->db->trans_start();
 			$this->db->query("UPDATE diskon SET potongan_harga = '$diskon' WHERE diskon_id='$diskon_id'");
+			$this->db->query("UPDATE diskon SET tanggal_mulai = '$tanggal_mulai' WHERE diskon_id='$diskon_id'");
+			$this->db->query("UPDATE diskon SET tanggal_berakhir = '$tanggal_berakhir' WHERE diskon_id='$diskon_id'");
 	      	$this->db->trans_complete();
 	        if($this->db->trans_status()==true)
 	        return true;
