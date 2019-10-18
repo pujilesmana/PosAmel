@@ -37,7 +37,8 @@
                       <th width="20">No</th>
                       <th>Nama Barang</th>
                       <th>Diskon</th>
-                      <th>Tanggal</th>
+                      <th>Tanggal Mulai</th>
+                      <th>Tanggal Berakhir</th>
                       <th width="100"><center>Aksi</center></th>
                   </tr>
               </thead>
@@ -55,13 +56,15 @@
                     $diskon_id = $i['diskon_id'];
                     $barang_nama = $i['barang_nama'];
                     $harga_potongan = $i['potongan_harga'];
-                    $tanggal = $i['diskon_tanggal'];
+                    $mulai_diskon = $i['mulai_diskon'];
+                    $akhir_diskon = $i['akhir_diskon'];
                   ?>
                   <tr>
                     <td><center><?php echo $no?></center></td>
                     <td><?= $barang_nama?></td>
                     <td><?php echo rupiah($harga_potongan)?></td>
-                    <td><?= $tanggal?></td>
+                    <td><?= $akhir_diskon?></td>
+                    <td><?= $akhir_diskon?></td>
                     <td>
                           <a href="#" style="margin-right: 10px; margin-left: 10px;" data-toggle="modal" data-target="#editdata<?php echo $diskon_id?>"><span class="ti-pencil"></span></a>
                           <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $diskon_id?>"><span class="ti-trash"></span></a>
@@ -102,6 +105,14 @@
                                 <div class="col-md-12">
                                     <label class="control-label mt-10">Diskon (% / Rp)</label>
                                     <input class="form-control form-white money" type="text" name="diskon" required />
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="control-label mt-10">Tanggal Mulai Diskon</label>
+                                    <input class="form-control form-white" type="date" name="tanggal_mulai_diskon" required />
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="control-label mt-10">Tanggal Berakhir Diskon</label>
+                                    <input class="form-control form-white" type="date" name="tanggal_akhir_diskon" required />
                                 </div>
                             </div>
                     </div>
@@ -145,8 +156,9 @@
                     $diskon_id = $i['diskon_id'];
                     $barang_id = $i['barang_id'];
                     $barang_nama = $i['barang_nama'];
-                    $harga_potongan = $i['potongan_harga'];
-                    $tanggal = $i['diskon_tanggal'];
+                    $harga_potongan = $i['potongan_harga']; 
+                    $mulai_diskon = $i['mulai_diskon'];
+                    $akhir_diskon = $i['akhir_diskon'];
                   ?>
         <!-- Modal edit Data -->
           <div class="modal" tabindex="-1" role="dialog" id="editdata<?php echo $diskon_id?>">
@@ -182,8 +194,9 @@
                     $diskon_id = $i['diskon_id'];
                     $barang_id = $i['barang_id'];
                     $barang_nama = $i['barang_nama'];
-                    $harga_potongan = $i['potongan_harga'];
-                    $tanggal = $i['diskon_tanggal'];
+                    $harga_potongan = $i['potongan_harga']; 
+                    $mulai_diskon = $i['mulai_diskon'];
+                    $akhir_diskon = $i['akhir_diskon'];
                   ?>
         <div class="modal" tabindex="-1" role="dialog" id="hapusdata<?php echo $diskon_id?>">
             <div class="modal-dialog">

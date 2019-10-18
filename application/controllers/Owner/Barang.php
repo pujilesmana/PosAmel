@@ -16,6 +16,7 @@
 		    $this->load->model('m_pemesanan');
 		    $this->load->model('m_barang');
 		    $this->load->model('m_list_barang');
+		    $this->load->model('m_stock');
 		    $this->load->library('upload');
 	  	}
 
@@ -423,7 +424,8 @@
 
 			  		$this->m_barang->update_barangImage($barang_id,$nama_barang, $stock, $harga_modal, $gambar);
 			  		$this->m_barang->update_barang_non_reseller($bnr_id, $harga_non_reseller);
-
+			  		$this->m_stock->save_stock_masuk($barang_id, $stock);
+					
 					echo $this->session->set_flashdata('msg','success_non_reseller');
 	                redirect('Owner/Barang');
 				}else{
@@ -439,6 +441,7 @@
 			  	$harga_modal = str_replace(".", "", $this->input->post('harga_modal'));
 			  	$this->m_barang->update_barang_noImage($barang_id,$nama_barang, $stock, $harga_modal);
 			  	$this->m_barang->update_barang_non_reseller($bnr_id, $harga_non_reseller);
+			  	$this->m_stock->save_stock_masuk($barang_id, $stock);
 	        	echo $this->session->set_flashdata('msg','success_non_reseller');
 				redirect('Owner/Barang');
 			}
@@ -461,6 +464,21 @@
 			       $this->load->view('v_header',$y);
 			       $this->load->view('owner/v_sidebar');
 			       $this->load->view('owner/v_history_stock',$x);
+ 	  		   
+		       
+		    }
+		    else{
+		       redirect('Login');
+		    }
+ 	  	}
+
+ 	  	function History_stock_masuk($barang_id){
+ 	  		if($this->session->userdata('akses') == 1 && $this->session->userdata('masuk') == true){
+ 	  			$y['title'] = "Stock";	
+ 	  		   	   $x['stock'] = $this->m_stock->getHistoryStock($barang_id,2);
+			       $this->load->view('v_header',$y);
+			       $this->load->view('owner/v_sidebar');
+			       $this->load->view('owner/v_history_stock_masuk',$x);
  	  		   
 		       
 		    }

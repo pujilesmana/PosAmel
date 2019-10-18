@@ -14,6 +14,7 @@
 		    };
 
 		    $this->load->model('m_barang');
+		    $this->load->model('m_diskon');
 		    $this->load->library('upload');
 	  	}
 
@@ -21,7 +22,7 @@
 	  		if($this->session->userdata('akses') == 1 && $this->session->userdata('masuk') == true){
 		       $y['title'] = "List Diskon Barang";
 		       $x['barang'] = $this->m_barang->getAllBarangR();
-		       $x['diskon'] = $this->m_barang->getDataDiskon();
+		       $x['diskon'] = $this->m_diskon->getDataDiskon();
 		       $this->load->view('v_header',$y);
 		       $this->load->view('owner/v_sidebar');
 		       $this->load->view('owner/v_diskon',$x);
@@ -34,20 +35,23 @@
 	  	function save_diskon(){
 	  		$diskon = str_replace(".", "", $this->input->post('diskon'));
 	  		$barang_id = $this->input->post('barang');
-
+	  		$tanggal_mulai_diskon = $this->input->post('tanggal_mulai_diskon');
+	  		$tanggal_akhir_diskon = $this->input->post('tanggal_akhir_diskon');
 
 	  		if($diskon > 100){
-	  			$this->m_barang->saveDiskon($barang_id,$diskon);
+	  			$this->m_diskon->saveDiskon($barang_id,$diskon,$tanggal_mulai,$tanggal_akhir_diskon);
 	  			echo $this->session->set_flashdata('msg','success');
 	            redirect('Owner/Diskon');
 	  		}elseif($diskon <= 100){
 	  			$a = $this->db->query("SELECT * FROM barang_non_reseller WHERE barang_id='$barang_id'")->row_array();
 	  			$diskon_new = ($a['bnr_harga'] * $diskon)/100;
-	  			$this->m_barang->saveDiskon($barang_id,$diskon_new);
+	  			$this->m_diskon->saveDiskon($barang_id,$diskon,$tanggal_mulai,$tanggal_akhir_diskon);
 	  			echo $this->session->set_flashdata('msg','success');
 	            redirect('Owner/Diskon');
 	  		}
 	  	}
+
+
 
 	  	function update_diskon(){
 	  		$diskon = str_replace(".", "", $this->input->post('diskon'));

@@ -74,7 +74,7 @@
                       $level = $i['level'];
                       $kurir_nama = $i['kurir_nama'];
                       $at_id = $i['at_id'];
-                       $mp_nama = $i['mp_nama'];
+                      $mp_nama = $i['mp_nama'];
                       $at_nama = $i['at_nama'];
 
                       if($level == 1){

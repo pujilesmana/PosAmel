@@ -84,7 +84,8 @@
                       <td>
                           <a href="#" style="margin-right: 10px; margin-left: 20px;" data-toggle="modal" data-target="#editdata<?php echo $barang_id?>"><span class="ti-pencil"></span></a>
                           <a href="#" style="margin-right: 10px" data-toggle="modal" data-target="#hapusdata<?php echo $barang_id?>"><span class="ti-trash"></span></a>
-                          <a href="<?php echo base_url()?>Owner/Barang/History/<?php echo $barang_id?>" data-toggle="tooltip" data-placement="top" title="Lihat History Stock"><span class="ti-eye"></span></a>
+                          <a href="<?php echo base_url()?>Owner/Barang/History/<?php echo $barang_id?>" data-toggle="tooltip" data-placement="top" title="Lihat History Stock Keluar"><span class="ti-eye"></span></a>
+                           <a href="<?php echo base_url()?>Owner/Barang/History_stock_masuk/<?php echo $barang_id?>" data-toggle="tooltip" data-placement="top" title="Lihat History Stock Masuk"><span class="ti-eye"></span></a>
                       </td>
                     </tr>
                     <?php endforeach;?>
