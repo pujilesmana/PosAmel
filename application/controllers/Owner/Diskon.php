@@ -39,13 +39,13 @@
 	  		$tanggal_akhir_diskon = $this->input->post('tanggal_akhir_diskon');
 
 	  		if($diskon > 100){
-	  			$this->m_diskon->saveDiskon($barang_id,$diskon,$tanggal_mulai,$tanggal_akhir_diskon);
+	  			$this->m_diskon->saveDiskon($barang_id,$diskon,$tanggal_mulai_diskon,$tanggal_akhir_diskon);
 	  			echo $this->session->set_flashdata('msg','success');
 	            redirect('Owner/Diskon');
 	  		}elseif($diskon <= 100){
 	  			$a = $this->db->query("SELECT * FROM barang_non_reseller WHERE barang_id='$barang_id'")->row_array();
 	  			$diskon_new = ($a['bnr_harga'] * $diskon)/100;
-	  			$this->m_diskon->saveDiskon($barang_id,$diskon,$tanggal_mulai,$tanggal_akhir_diskon);
+	  			$this->m_diskon->saveDiskon($barang_id,$diskon,$tanggal_mulai_diskon,$tanggal_akhir_diskon);
 	  			echo $this->session->set_flashdata('msg','success');
 	            redirect('Owner/Diskon');
 	  		}

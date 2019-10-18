@@ -63,7 +63,7 @@
                     <td><center><?php echo $no?></center></td>
                     <td><?= $barang_nama?></td>
                     <td><?php echo rupiah($harga_potongan)?></td>
-                    <td><?= $akhir_diskon?></td>
+                    <td><?= $mulai_diskon?></td>
                     <td><?= $akhir_diskon?></td>
                     <td>
                           <a href="#" style="margin-right: 10px; margin-left: 10px;" data-toggle="modal" data-target="#editdata<?php echo $diskon_id?>"><span class="ti-pencil"></span></a>

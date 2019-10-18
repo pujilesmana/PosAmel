@@ -30,15 +30,36 @@
 		       	if($level == 1){
 		       		$t = $this->db->query("SELECT SUM(a.lb_qty * d.br_harga) AS total_omset, (SUM(a.lb_qty * d.br_harga))-(SUM(a.lb_qty * c.barang_harga_modal)) AS total_untung FROM list_barang a, pemesanan b, barang c, barang_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.ktg_qty = d.br_kuantitas AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
               		$d=$t->row_array();
-               		$total_un = $d['total_untung'];
+              		$total_un = $d['total_untung'];
                		$total_om = $d['total_omset'];
+
+               		
 		       	}elseif($level == 2){
 		       		$t = $this->db->query("SELECT SUM(a.lb_qty * d.bnr_harga) AS total_omset, (SUM(a.lb_qty * d.bnr_harga))-(SUM(a.lb_qty * c.barang_harga_modal)) AS total_untung FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
               		$d=$t->row_array();
                		$total_un = $d['total_untung'];
                		$total_om = $d['total_omset'];
-		       	}
+               		//diskon
+              			  $z=$this->db->query("SELECT a.lb_qty ,a.barang_id,b.pemesanan_tanggal  FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+                        foreach ($z->result_array() as $i ) {
+                                 $barang_id = $i['barang_id'];
+                                 $lb_qty = $i['lb_qty'];
+                                 $pemesanan_tanggal = $i['pemesanan_tanggal'];
+                                  $z=$this->db->query("select potongan_harga from diskon where barang_id='$barang_id' and  tanggal_mulai <= '$pemesanan_tanggal' AND tanggal_berakhir >= '$pemesanan_tanggal'")->row_array();
 
+
+                                  if($z['potongan_harga']==null){
+                                  	
+                                  }else{
+                                  	$total_un=$total_un-($z['potongan_harga']*$lb_qty);
+                                  	$total_om=$total_om-($z['potongan_harga']*$lb_qty);
+                                  }
+
+                        }
+                        //--------
+		       	}
+		       		
+		       		
 		       		$total_u = $total_u + $total_un;
 		       		$total_o = $total_o + $total_om;
 		       }
@@ -47,7 +68,8 @@
                $total_omset = $total_o;
                $x['total_untung'] = $total_untung;
                $x['total_omset'] = $total_omset;
-                 $x['level1'] = 0;
+                $x['level1'] = 0;
+                
 		       $this->load->view('v_header',$y);
 		       $this->load->view('owner/v_sidebar');
 		       $this->load->view('owner/v_transaksi',$x);
@@ -72,11 +94,29 @@
               		$d=$t->row_array();
                		$total_un = $d['total_untung'];
                		$total_om = $d['total_omset'];
+               		
 		       	}elseif($level == 2){
 		       		$t = $this->db->query("SELECT SUM(a.lb_qty * d.bnr_harga) AS total_omset, (SUM(a.lb_qty * d.bnr_harga))-(SUM(a.lb_qty * c.barang_harga_modal)) AS total_untung FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
               		$d=$t->row_array();
                		$total_un = $d['total_untung'];
                		$total_om = $d['total_omset'];
+               		//diskon
+              			  $z=$this->db->query("SELECT a.lb_qty ,a.barang_id,b.pemesanan_tanggal  FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+                        foreach ($z->result_array() as $i ) {
+                                 $barang_id = $i['barang_id'];
+                                 $lb_qty = $i['lb_qty'];
+                                 $pemesanan_tanggal = $i['pemesanan_tanggal'];
+                                  $z=$this->db->query("select potongan_harga from diskon where barang_id='$barang_id' and  tanggal_mulai <= '$pemesanan_tanggal' AND tanggal_berakhir >= '$pemesanan_tanggal'")->row_array();
+                                 
+                                  if($z['potongan_harga']==null){
+                                  	
+                                  }else{
+                                  	$total_un=$total_un-($z['potongan_harga']*$lb_qty);
+                                  	$total_om=$total_om-($z['potongan_harga']*$lb_qty);
+                                  }
+
+                        }
+                    //diskon
 		       	}
 
 		       		$total_u = $total_u + $total_un;
@@ -122,11 +162,28 @@
               		$d=$t->row_array();
                		$total_un = $d['total_untung'];
                		$total_om = $d['total_omset'];
+               	
 		       	}elseif($level == 2){
 		       		$t = $this->db->query("SELECT SUM(a.lb_qty * d.bnr_harga) AS total_omset, (SUM(a.lb_qty * d.bnr_harga))-(SUM(a.lb_qty * c.barang_harga_modal)) AS total_untung FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE b.pemesanan_id = '$pemesanan_id' AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id");
               		$d=$t->row_array();
                		$total_un = $d['total_untung'];
                		$total_om = $d['total_omset'];
+               		//diskon
+              			  $z=$this->db->query("SELECT a.lb_qty ,a.barang_id,b.pemesanan_tanggal  FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+                        foreach ($z->result_array() as $i ) {
+                                 $barang_id = $i['barang_id'];
+                                 $lb_qty = $i['lb_qty'];
+                                 $pemesanan_tanggal = $i['pemesanan_tanggal'];
+                                 $z=$this->db->query("select potongan_harga from diskon where barang_id='$barang_id' and  tanggal_mulai <= '$pemesanan_tanggal' AND tanggal_berakhir >= '$pemesanan_tanggal'")->row_array();
+
+                                  if($z['potongan_harga']==null){
+                                  	
+                                  }else{
+                                  	$total_un=$total_un-($z['potongan_harga']*$lb_qty);
+                                  	$total_om=$total_om-($z['potongan_harga']*$lb_qty);
+                                  }
+
+                        }
 		       	}
 
 		       		$total_u = $total_u + $total_un;
@@ -174,6 +231,22 @@
               		$d=$t->row_array();
                		$total_untung = $d['total_untung'];
                		$total_omset = $d['total_omset'];
+               		//diskon
+              			  $z=$this->db->query("SELECT a.lb_qty ,a.barang_id,b.pemesanan_tanggal  FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+                        foreach ($z->result_array() as $i ) {
+                                 $barang_id = $i['barang_id'];
+                                 $lb_qty = $i['lb_qty'];
+                                 $pemesanan_tanggal = $i['pemesanan_tanggal'];
+                                  $z=$this->db->query("select potongan_harga from diskon where barang_id='$barang_id' and  tanggal_mulai <= '$pemesanan_tanggal' AND tanggal_berakhir >= '$pemesanan_tanggal'")->row_array();
+                                 
+                                  if($z['potongan_harga']==null){
+                                  	
+                                  }else{
+                                  	$total_untung=$total_untung-($z['potongan_harga']*$lb_qty);
+                                  	$total_omset=$total_omset-($z['potongan_harga']*$lb_qty);
+                                  }
+
+                        }
 		       	}
 
 		       		$total_u = $total_u + $total_untung;
@@ -214,6 +287,22 @@
               		$d=$t->row_array();
                		$total_untung = $d['total_untung'];
                		$total_omset = $d['total_omset'];
+               		//diskon
+              			  $z=$this->db->query("SELECT a.lb_qty ,a.barang_id,b.pemesanan_tanggal  FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+                        foreach ($z->result_array() as $i ) {
+                                 $barang_id = $i['barang_id'];
+                                 $lb_qty = $i['lb_qty'];
+                                 $pemesanan_tanggal = $i['pemesanan_tanggal'];
+                                 $z=$this->db->query("select potongan_harga from diskon where barang_id='$barang_id' and  tanggal_mulai <= '$pemesanan_tanggal' AND tanggal_berakhir >= '$pemesanan_tanggal'")->row_array();
+                                 
+                                  if($z['potongan_harga']==null){
+                                  	
+                                  }else{
+                                  	$total_untung=$total_untung-($z['potongan_harga']*$lb_qty);
+                                  	$total_omset=$total_omset-($z['potongan_harga']*$lb_qty);
+                                  }
+
+                        }
 		       	}
 
 		       		$total_u = $total_u + $total_untung;
@@ -248,6 +337,21 @@
               		$d=$t->row_array();
                		$total_untung = $d['total_untung'];
                		$total_omset = $d['total_omset'];
+               		//diskon
+              			  $z=$this->db->query("SELECT a.lb_qty ,a.barang_id,b.pemesanan_tanggal  FROM list_barang a, pemesanan b, barang c, barang_non_reseller d WHERE a.pemesanan_id = '$pemesanan_id' AND lb_lvl =2 AND a.pemesanan_id = b.pemesanan_id AND a.barang_id = c.barang_id AND a.barang_id = d.barang_id ORDER BY lb_id");
+                        foreach ($z->result_array() as $i ) {
+                                 $barang_id = $i['barang_id'];
+                                 $lb_qty = $i['lb_qty'];
+                                 $pemesanan_tanggal = $i['pemesanan_tanggal'];
+                                  $z=$this->db->query("select potongan_harga from diskon where barang_id='$barang_id' and  tanggal_mulai <= '$pemesanan_tanggal' AND tanggal_berakhir >= '$pemesanan_tanggal'")->row_array();
+                                  if($z['potongan_harga']==null){
+                                  	
+                                  }else{
+                                  	$total_untung=$total_untung-($z['potongan_harga']*$lb_qty);
+                                  	$total_omset=$total_omset-($z['potongan_harga']*$lb_qty);
+                                  }
+
+                        }
 		       	}
 
 		       		$total_u = $total_u + $total_untung;
